@@ -1,0 +1,39 @@
+/* pages/recharge/recharge.wxss */
+.recharge-box{
+  overflow: hidden;
+  padding: 0 30rpx;
+}
+.r-title{
+  color: #000;
+  font-size: 28rpx;
+  margin: 60rpx 0 80rpx;
+}
+.r-price{
+  padding-bottom: 10rpx;
+  border-bottom: 1rpx solid #EBEBEB;
+}
+.r-price text{
+  color: #000;
+  font-size: 56rpx;
+  font-weight: bold;
+}
+.r-price input{
+  display: inline-block;
+  width: 80%;
+  font-size: 34rpx;
+  vertical-align: bottom;
+}
+.r-query{
+  color: #fff;
+  font-size: 34rpx;
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  background: #d50818;
+  border-radius: 10rpx;
+  text-align: center;
+  margin: 100rpx 0 0;
+}
+.r-query::after{
+  border: 0;
+}

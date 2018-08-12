@@ -1,0 +1,10 @@
+/* pages/Instructions/Instructions.wxss */
+.instruct-box{
+  overflow: hidden;
+  padding: 30rpx;
+}
+.instruct-box text{
+  display: block;
+  color: #505050;
+  font-size: 22rpx;
+}

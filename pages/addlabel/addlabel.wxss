@@ -1,0 +1,33 @@
+/* pages/addlabel/addlabel.wxss */
+page{
+  background: #f7f7f7;
+}
+.label-box{
+  overflow: hidden;
+  padding: 50rpx 30rpx;
+}
+.input-box{
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #EDEDED;
+}
+.input-box input{
+  color: #a6a6a6;
+  font-size: 46rpx;
+  font-weight: lighter;
+}
+.label-box text{
+  color: #5c5c5c;
+  font-size: 24rpx;
+  display: block;
+  margin: 20rpx 0 200rpx;
+}
+.add-btn{
+  background: #e1291d;
+  height: 88rpx;
+  line-height: 88rpx;
+  color: #fff;
+  font-size: 34rpx;
+}
+.add-btn::after{
+  border: 0;
+}

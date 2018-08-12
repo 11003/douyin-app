@@ -1,0 +1,4 @@
+<!--pages/Instructions/Instructions.wxml-->
+<view class='instruct-box'>
+  <text>{{content}}</text>
+</view>

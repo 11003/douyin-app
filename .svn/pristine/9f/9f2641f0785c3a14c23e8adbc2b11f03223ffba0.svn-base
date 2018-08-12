@@ -1,0 +1,40 @@
+<!--pages/search/search.wxml-->
+<view class='search-top'>
+  <form bindsubmit="formSubmit">
+    <image src='/images/back.png' bindtap='toBack' class='closeImg'></image>
+    <view class='input-box'>
+      <input placeholder='请输入搜索内容'></input>
+    </view>
+    <text>搜索</text>
+  </form>
+</view>
+
+<view class='nav-box'>
+  <view wx:for="{{searchNav}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" wx:key="unique" bindtap="navbarTap">
+    {{item.name}}
+  </view>
+</view>
+<!-- 搜索视频 -->
+<view class='search-box' hidden="{{currentTab!=0}}">
+  <view class='svideo-box'>
+    <view class='svideo-item' wx:for="{{searchVideo}}" wx:key=''>
+      <image src='{{item.img}}' mode='widthFix' class='sImg'></image>
+      <view class='topLayer'>{{item.title}}</view>
+      <view class='bottomLayer'><image src='/images/play.png'></image>{{item.num}}</view>
+    </view>
+  </view>
+</view>
+<!-- 搜索用户 -->
+<view class='search-box' hidden="{{currentTab!=1}}">
+  <view class='user-box'>
+    <view class='user-item' wx:for="{{searchUser}}" wx:key="">
+      <image src='{{item.headImg}}' class='userImg'></image>
+      <view class='user-info'>
+        <view class='user-title'>{{item.userName}}</view>
+        <view class='user-detail'><text>粉丝:{{item.fans}}</text><text>作品:{{item.work}}</text></view>
+        <view class='user-profile'>{{item.info}}</view>
+      </view>
+      <button class='uBtn'>关注</button>
+    </view>
+  </view>
+</view>

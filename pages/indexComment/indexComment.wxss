@@ -1,0 +1,113 @@
+/* pages/indexComment/indexComment.wxss */
+page{
+  height: 100%;
+  position: relative;
+}
+.comment-box{
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  white-space: nowrap;
+  /* position: fixed;
+  left: 0;
+  top: 0; */
+  background: #000;
+}
+.comment-top{
+  width: 100%;
+  height: 8vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 30rpx;
+  color: #6e6e6e;
+  font-size: 28rpx;
+  border-bottom: 1rpx solid #242424;
+}
+.comment-top image{
+  display: block;
+  width: 37rpx;
+  height: 37rpx;
+  float: right;
+}
+.comment-content{
+  width: 100%;
+  height: 84vh;
+  overflow: hidden;
+  padding: 20rpx 30rpx 0;
+  box-sizing: border-box;
+}
+.comment-item{
+  width: 100%;
+  overflow: hidden;
+  padding: 20rpx 0 30rpx;
+  border-bottom: 1rpx solid #1B1B1B;
+}
+.ci-head{
+  display: block;
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  float: left;
+  margin-right: 20rpx;
+}
+.comment-center{
+  width: 70%;
+  float: left;
+  overflow: hidden;
+}
+.c-name{
+  color: #415d6d;
+  font-size: 26rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 10rpx;
+}
+.c-content{
+  color: #727272;
+  font-size: 24rpx;
+}
+.comment-right{
+  float: right;
+  text-align: center;
+}
+.ci-like{
+  display: inline-block;
+  width: 41rpx;
+  height: 35rpx;
+}
+.comment-right view{
+  color: #727272;
+  font-size: 24rpx;
+  display: block;
+  text-align: center;
+}
+.comment-input{
+  height: 8vh;
+  overflow: hidden;
+  padding: 20rpx 30rpx;
+  background: #1b1b1b;
+  box-sizing: border-box;
+}
+.comment-input view{
+  width: 75%;
+  float: left;
+}
+.comment-input input{
+  color: #838383;
+  font-size: 26rpx;
+}
+.comment-input button{
+  width: 120rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  color: #fff;
+  font-size: 26rpx;
+  background: #CC1616;
+  border-radius: 10rpx;
+  float: right;
+}
+.comment-input button::after{
+  border: 0;
+}

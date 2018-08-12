@@ -1,0 +1,109 @@
+/* pages/personInfo/personInfo.wxss */
+.settings-top{
+  overflow: hidden;
+  background: #1f1c30;
+  padding-bottom: 45rpx;
+  text-align: center;
+}
+.head-img{
+  display: block;
+  width: 117rpx;
+  height: 117rpx;
+  border-radius: 50%;
+  margin: 30rpx auto 10rpx;
+}
+.s-name{
+  color: #bdbdbd;
+  font-size: 26rpx;
+}
+.s-price{
+  color: #fff;
+  font-size: 30rpx;
+  margin: 15rpx 0 40rpx;
+}
+.s-btn{
+  overflow: hidden;
+}
+.s-btn button{
+  display: inline-block;
+  width: 166rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  background: #3e3b4c;
+  color: #bab8c3;
+  font-size: 26rpx;
+  border-radius: 10rpx;
+  margin-right: 20rpx;
+}
+.s-btn button:last-child{
+  margin-right: 0;
+}
+
+.settings-content{
+  overflow: hidden;
+  padding: 40rpx 30rpx 100rpx;
+}
+.settings-content form{
+  display: block;
+  overflow: hidden;
+}
+.item-box{
+  overflow: hidden;
+  margin-bottom: 40rpx;
+}
+.item-left{
+  width: 25%;
+  height: 50rpx;
+  line-height: 50rpx;
+  display: block;
+  float: left;
+  color: #3a3a3a;
+  font-size: 26rpx;
+}
+.item-right{
+  width: 75%;
+  height: 50rpx;
+  line-height: 50rpx;
+  float: left;
+  display: block;
+  border-bottom: 1rpx solid #eee;
+  color: #3a3a3a;
+  font-size: 24rpx;
+}
+.item-box.height .item-right{
+  height: 150rpx;
+  line-height: auto;
+  border-bottom: 0;
+}
+.code-border{
+  width: 147rpx;
+  height: 147rpx;
+  border: 1rpx solid #BFBFBF;
+  box-sizing: border-box;
+  color: #757575;
+  font-size: 62rpx;
+  text-align: center;
+}
+.code-border text{
+  display: block;
+  width: 147rpx;
+  height: 147rpx;
+  line-height: 145rpx;
+}
+.code-border image{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.submit-save{
+  color: #fff;
+  font-size: 34rpx;
+  background: #d50818;
+  border-radius: 10rpx;
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  text-align: center;
+  margin: 80rpx auto;
+}

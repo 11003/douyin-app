@@ -1,0 +1,13 @@
+<!--pages/indexBuy/indexBuy.wxml-->
+<view class="buy-box">
+  <view class='buy-top'>购买<image src='/images/back.png' bindtap='back'></image></view>
+  <view class='buy-bottom'>
+    <radio-group bindchange="radioChange">
+      <label class="radiobox" wx:for="{{items}}" bindtap="radioSelect" wx:key='' data-id='{{index}}'>
+        <radio color='#e02727' value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}} <text class="buy-price {{item.checked == true?'active':''}}">¥{{item.price}}</text>
+      </label>
+    </radio-group>
+    <view class='remark'>功能使用说明</view>
+    <button class='toBuy'>立即购买</button>
+  </view>
+</view>

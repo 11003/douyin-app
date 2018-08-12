@@ -1,0 +1,29 @@
+<!--pages/message/message.wxml-->
+<view class='message-nav'>
+  <navigator url='/pages/news/news' class='nav-item'>
+    <image src='/images/mess_nav1.png' mode='widthFix'></image>
+    <text>消息</text>
+  </navigator>
+  <navigator url='/pages/comment/comment' class='nav-item'>
+    <image src='/images/mess_nav2.png' mode='widthFix'></image>
+    <text>评论</text>
+  </navigator>
+  <navigator url='/pages/love/love' class='nav-item'>
+    <image src='/images/mess_nav3.png' mode='widthFix'></image>
+    <text>点赞</text>
+  </navigator>
+  <navigator url='/pages/fans/fans' class='nav-item'>
+    <image src='/images/mess_nav4.png' mode='widthFix'></image>
+    <text>粉丝</text>
+  </navigator>
+</view>
+
+<view class='message-content'>
+  <view class='message-item' wx:for="{{messageArr}}" wx:key="">
+    <view class='mImg'><image src='/images/notice.png' mode='widthFix'></image></view>
+    <view class='mRight'>
+      <view class='mTitle'>{{item.post_title}}<text>{{item.published_time}}</text></view>
+      <view class='mInfo'>{{item.post_content}}</view>
+    </view>
+  </view>
+</view>

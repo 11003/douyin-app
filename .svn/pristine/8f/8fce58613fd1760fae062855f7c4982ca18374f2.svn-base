@@ -1,0 +1,27 @@
+/* pages/withdraw/withdraw.wxss */
+page{
+  background: #f5f5f5;
+}
+.withdraw-box{
+  overflow: hidden;
+  padding-top: 50rpx;
+}
+.withdraw-box .radio{
+  display: block;
+  color: #262626;
+  font-size: 28rpx;
+  padding: 20rpx 30rpx;
+  background: #fff;
+  margin-bottom: 15rpx;
+}
+.withdraw-box .radio radio{
+  transform: scale(0.8);
+  margin-right: 40rpx;
+}
+.withdraw-box image{
+  display: inline-block;
+  vertical-align: middle;
+  width: 50rpx;
+  height: 40rpx;
+  margin: 0 10rpx 5rpx 0;
+}

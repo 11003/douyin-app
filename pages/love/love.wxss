@@ -1,0 +1,4 @@
+/* pages/love/love.wxss */
+page{
+  background: #f5f5f5;
+}

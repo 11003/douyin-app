@@ -1,0 +1,40 @@
+/* pages/withCard/withCard.wxss */
+page{
+  background: #f5f5f5;
+}
+.card-box{
+  padding-top: 50rpx;
+}
+.card-box .card-item{
+  background: #fff;
+  padding: 0 30rpx;
+  overflow: hidden;
+  margin-bottom: 15rpx;
+}
+.card-item .left-word,.card-item .right-word{
+  display: block;
+  float: left;
+  width: 25%;
+  color: #262626;
+  font-size: 26rpx;
+  padding: 25rpx 0;
+}
+.card-item .left-word{
+  padding: 33rpx 0;
+}
+.card-item .right-word{
+  width: 75%;
+}.query-draw{
+  width: 60%;
+  height: 90rpx;
+  line-height: 90rpx;
+  text-align: center;
+  background: #e1291d;
+  color: #fff;
+  font-size: 34rpx;
+  border-radius: 10rpx;
+  margin: 100rpx auto 0;
+}
+.query-draw::after{
+  border: 0;
+}

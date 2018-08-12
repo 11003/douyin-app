@@ -1,0 +1,14 @@
+<!--pages/comment/comment.wxml-->
+<view class='comment-box'>
+  <view class='comment-item' wx:for='{{commentArr}}' wx:key=''>
+    <view class='cImg'><image src='{{item.head}}' mode='widthFix'></image></view>
+    <view class='cCenter'>
+      <view class='cTitle'><text>{{item.name}}</text>评论了你的作品</view>
+      <view class='cInfo'>{{item.info}}</view>
+      <view class='cTime'>{{item.time}}</view>
+    </view>
+    <view class='cRight'>
+      <image src='{{item.img}}' mode='widthFix'></image>
+    </view>
+  </view>
+</view>

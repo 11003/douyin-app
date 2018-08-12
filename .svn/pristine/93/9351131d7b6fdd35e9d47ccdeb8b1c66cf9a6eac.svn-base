@@ -1,0 +1,10 @@
+<!--pages/attention/attention.wxml-->
+<view class='attention-box'>
+  <view class='atten-item' wx:for="{{attenArr}}" wx:key=''>
+    <image src='{{item.img}}' mode='widthFix'></image>
+    <view class='aLayer'>
+      <image src='{{item.headImg}}'></image>
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,15 @@
+/* pages/userAgreement/userAgreement.wxss */
+.agreement-box{
+  overflow: hidden;
+  padding: 30rpx; 
+}
+.agreement-title{
+  color: #505050;
+  font-size: 26rpx;
+  margin-bottom: 20rpx;
+}
+.agreement-content text{
+  display: block;
+  color: #505050;
+  font-size: 22rpx;
+}

@@ -1,0 +1,8 @@
+<!--pages/recharge/recharge.wxml-->
+<view class='recharge-box'>
+  <view class='r-title'>充值金额</view>
+  <view class='r-price'>
+    <text>￥</text><input></input>
+  </view>
+  <button class='r-query'>确认充值</button>
+</view>

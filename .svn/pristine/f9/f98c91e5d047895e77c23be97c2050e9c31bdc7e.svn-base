@@ -1,0 +1,74 @@
+/* pages/withWechat/withWechat.wxss */
+page{
+  background: #f5f5f5;
+}
+.weChat-box{
+  padding-top: 50rpx;
+}
+.weChat-box .wx-item{
+  background: #fff;
+  padding: 0 30rpx;
+  overflow: hidden;
+  margin-bottom: 15rpx;
+}
+.wx-item .left-word,.wx-item .right-word{
+  display: block;
+  float: left;
+  width: 25%;
+  color: #262626;
+  font-size: 26rpx;
+  padding: 25rpx 0;
+}
+.wx-item .left-word{
+  padding: 33rpx 0;
+}
+.wx-item .right-word{
+  width: 75%;
+}
+.wx-code .left-word{
+  width: 100%;
+  padding: 30rpx 0;
+}
+.wx-code .item{
+  padding-bottom: 60rpx;
+}
+.code-border{
+  width: 147rpx;
+  height: 147rpx;
+  border: 1rpx dashed #BFBFBF;
+  box-sizing: border-box;
+  color: #757575;
+  font-size: 62rpx;
+  text-align: center;
+  overflow: hidden;
+}
+.code-border text{
+  display: block;
+  width: 147rpx;
+  height: 147rpx;
+  line-height: 145rpx;
+  box-sizing: border-box;
+}
+.wx-code .item image{
+  display: block;
+  width: 147rpx;
+  height: 147rpx;
+  border: 1rpx solid #BFBFBF;
+  box-sizing: border-box;
+  float: left;
+  margin-right: 25rpx;
+}
+.query-draw{
+  width: 60%;
+  height: 90rpx;
+  line-height: 90rpx;
+  text-align: center;
+  background: #e1291d;
+  color: #fff;
+  font-size: 34rpx;
+  border-radius: 10rpx;
+  margin: 100rpx auto 0;
+}
+.query-draw::after{
+  border: 0;
+}

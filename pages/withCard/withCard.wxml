@@ -1,0 +1,18 @@
+<!--pages/withCard/withCard.wxml-->
+<view class='card-box'>
+  <form bindsubmit="formSubmit">
+    <view class='card-item'>
+      <text class='left-word'>姓名</text><view class='right-word'><input value='{{cardName}}' name='cardName'></input></view>
+    </view>
+    <view class='card-item'>
+      <text class='left-word'>银行卡号</text><view class='right-word'><input value='{{cardNumber}}' name='cardNumber'></input></view>
+    </view>
+    <view class='card-item'>
+      <text class='left-word'>所属银行</text><view class='right-word'><input value='{{cardBank}}' name='cardBank'></input></view>
+    </view>
+    <view class='card-item'>
+      <text class='left-word'>提现金额</text><view class='right-word'><input value='{{cardPrice}}' name='cardPrice'></input></view>
+    </view>
+    <button class='query-draw'>确认提现</button>
+  </form>
+</view>

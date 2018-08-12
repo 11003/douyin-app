@@ -1,0 +1,10 @@
+<!--pages/news/news.wxml-->
+<view class='message-content'>
+  <view class='message-item' wx:for="{{messageArr}}" wx:key="">
+    <view class='mImg'><image src='{{item.img}}' mode='widthFix'></image></view>
+    <view class='mRight'>
+      <view class='mTitle'>{{item.title}}<text>{{item.time}}</text></view>
+      <view class='mInfo'>{{item.info}}</view>
+    </view>
+  </view>
+</view>

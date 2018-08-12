@@ -1,0 +1,70 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/indexComment/indexComment",
+    "pages/indexBuy/indexBuy",
+    "pages/person/person",
+    "pages/message/message",
+    "pages/news/news",
+    "pages/comment/comment",
+    "pages/love/love",
+    "pages/Instructions/Instructions",
+    "pages/userAgreement/userAgreement",
+    "pages/label/label",
+    "pages/addlabel/addlabel",
+    "pages/fans/fans",
+    "pages/atten/atten",
+    "pages/search/search",
+    "pages/attention/attention",
+    "pages/postVideo/postVideo",
+    "pages/withCard/withCard",
+    "pages/withWechat/withWechat",
+    "pages/withdraw/withdraw",
+    "pages/personInfo/personInfo",
+    "pages/recharge/recharge",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "短视频",
+    "navigationBarTextStyle":"white"
+  },
+  "tabBar": {
+    "color": "#fff",
+    "selectedColor": "#cc1616",
+    "backgroundColor": "#000",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/images/icon1.png",
+        "selectedIconPath": "/images/icon1_on.png"
+      },
+      {
+        "pagePath": "pages/attention/attention",
+        "text": "关注",
+        "iconPath": "/images/icon2.png",
+        "selectedIconPath": "/images/icon2_on.png"
+      },
+      {
+        "pagePath": "pages/postVideo/postVideo",
+        "text": "发布",
+        "iconPath": "/images/icon3.png",
+        "selectedIconPath": "/images/icon3_on.png"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "text": "通知",
+        "iconPath": "/images/icon4.png",
+        "selectedIconPath": "/images/icon4_on.png"
+      },
+      {
+        "pagePath": "pages/person/person",
+        "text": "我",
+        "iconPath": "/images/icon5.png",
+        "selectedIconPath": "/images/icon5_on.png"
+      }
+    ]
+  }
+}

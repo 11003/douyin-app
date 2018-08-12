@@ -1,0 +1,10 @@
+<!--pages/addlabel/addlabel.wxml-->
+<view class='label-box'>
+  <form bindsubmit="formSubmit">
+  <view class='input-box'>
+    <input placeholder='请输入你的标签' name="name" maxlength='5'></input>
+  </view>
+  <text>自定义标签最多5个字</text>
+  <button class='add-btn' formType="submit">添加</button>
+  </form>
+</view>

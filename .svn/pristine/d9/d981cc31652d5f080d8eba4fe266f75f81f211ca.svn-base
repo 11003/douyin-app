@@ -1,0 +1,40 @@
+/* pages/attention/attention.wxss */
+.attention-box{
+  overflow: hidden;
+}
+.atten-item{
+  width: 49.5%;
+  height: 470rpx;
+  float: left;
+  position: relative;
+  margin-bottom: 8rpx;
+}
+.atten-item:nth-child(even){
+  float: right;
+}
+.atten-item image{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.aLayer{
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 20rpx;
+  color: #ddd;
+  font-size: 28rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 10rpx 0 30rpx;
+  box-sizing: border-box;
+}
+.aLayer image{
+  display: inline-block;
+  width: 74rpx;
+  height: 74rpx;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 20rpx 5rpx 0;
+}

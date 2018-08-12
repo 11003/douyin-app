@@ -1,0 +1,164 @@
+//app.js
+App({
+
+  d: {
+    ceshiUrl: "http://127.0.0.1/dyxcx/public/index.php",
+    userId: 0,
+  },
+
+  globalData: {
+    userInfo: null
+  },
+  /**
+   * 当小程序初始化完成时，会触发 onLaunch（全局只触发一次）
+   */
+  onLaunch: function () {
+    // 展示本地存储能力
+    var logs = wx.getStorageSync('logs') || []
+    logs.unshift(Date.now())
+    wx.setStorageSync('logs', logs)
+    this.getUserInfo();
+  },
+  getUserInfo: function (cb){
+    var that = this;
+    if(that.globalData.userInfo){
+      typeof cb == "function" && cb(that.globalData.userInfo)
+    }else{
+      //调用登陆接口
+      wx.login({
+        success: function (res) {
+          console.log('打印出了code的值app.js+30');  //打印出了code的值 res.code
+          var code = res.code
+          if (code) {
+            wx.getSetting({
+              success:function(){
+                  // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+                  // scope.userInfo已经废弃
+                wx.getUserInfo({
+                  success: function (res) {
+                    // 用户所有的信息
+                    that.globalData.userInfo = res.userInfo;
+                    typeof cb == "function" && cb(that.globalData.userInfo);
+                    // 获取code
+                    that.getUserSessionKey(code);
+                  }
+                })
+              }
+            })
+          }
+        }
+      })
+    }
+  },
+  getUserSessionKey:function(code){
+    console.log(code);
+    var that =this;
+    wx.request({
+      url: that.d.ceshiUrl + '/Api/Login/getsessionkeys',
+      method: 'POST',
+      data: {
+        code: code,
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success: function (res) {
+        console.log('返回回来的openid值app.js+66');
+        var data = res.data;
+        if (data.status == 0) {
+          wx.showToast({
+            title: data.err,
+            duration: 2000
+          });
+          return false;
+        }
+        that.globalData.userInfo['sessionId'] = data.session_key;
+        that.globalData.userInfo['openid'] = data.openid;
+        that.onLoginUser();
+      
+      },
+      fail: function (e) {
+        wx.showToast({
+          title: '请注意您的访问http地址',
+          duration: 2000,
+          icon:'none'
+        });
+      },
+    })
+  },
+  onLoginUser:function(){
+    var that = this;
+    // 用户信息
+    var user = that.globalData.userInfo;
+    // console.log(user);
+    wx.request({
+      url: that.d.ceshiUrl + '/Api/Login/authlogin',
+      method: 'POST',
+      data:{  
+        NickName : user.nickName,
+        HeadUrl: user.avatarUrl, 
+        Gender: user.gender,
+        UserCity: user.city,
+        openid: user.openid,
+        sessionId: user.sessionId,
+      },
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      success: function(res){
+        console.log('正在获取用户信息...app.js+109');
+        var data = res.data.arr;
+        var status = res.data.status;
+        if (status != 1) {
+          wx.showToast({
+            title: res.data.err,
+            duration: 3000
+          });
+          return false;
+        }
+        that.globalData.userInfo['id'] = data.ID;
+        that.globalData.userInfo['NickName'] = data.NickName;
+        that.globalData.userInfo['HeadUrl'] = data.HeadUrl;
+        that.globalData.userInfo['Gender'] = data.Gender;
+        that.globalData.userInfo['UserCity'] = data.UserCity;
+
+        var userId = data.ID;
+        if (!userId) {
+          wx.showToast({
+            title: '登录失败！',
+            duration: 3000
+          });
+          return false;
+        }
+        that.d.userId = userId;
+      },
+      fail: function (e) {
+        wx.showToast({
+          title: '网络异常！err:authlogin',
+          duration: 2000
+        });
+      },
+    })
+  },
+  /**
+   * 当小程序启动，或从后台进入前台显示，会触发 onShow
+   */
+  onShow: function (options) {
+    
+  },
+
+  /**
+   * 当小程序从前台进入后台，会触发 onHide
+   */
+  onHide: function () {
+    
+  },
+
+  /**
+   * 当小程序发生脚本错误，或者 api 调用失败时，会触发 onError 并带上错误信息
+   */
+  onError: function (msg) {
+    
+  },
+
+})

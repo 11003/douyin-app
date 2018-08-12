@@ -1,0 +1,75 @@
+/* pages/indexBuy/indexBuy.wxss */
+page{
+  background: #000;
+}
+.buy-box{
+  position: fixed;
+  width: 92%;
+  top: 24%;
+  left: 4%;
+  background: #fff;
+  border-radius: 10rpx;
+  z-index: 20;
+  overflow: hidden;
+  transition: all .3s ease;
+}
+.buy-top{
+  width: 100%;
+  overflow: hidden;
+  padding: 20rpx;
+  box-sizing: border-box;
+  color: #6e6e6e;
+  font-size: 28rpx;
+  border-bottom: 1rpx solid #EFEFEF;
+}
+.buy-top image{
+  display: block;
+  float: right;
+  width: 35rpx;
+  height: 35rpx;
+}
+.buy-bottom{
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 50rpx 40rpx;
+}
+.buy-bottom .radiobox{
+  display: block;
+  margin-bottom: 30rpx;
+  color: #7a7a7a;
+  font-size: 26rpx;
+}
+.buy-bottom .radiobox:last-child{
+  margin-bottom: 0;
+}
+.buy-bottom .radiobox radio{
+  transform: scale(0.8);
+}
+.buy-bottom .radiobox text{
+  display: block;
+  float: right;
+}
+.buy-bottom .radiobox text.active{
+  color: #f71e35;
+}
+
+.remark{
+  color: #616161;
+  font-size: 24rpx;
+  margin: 60rpx 0 30rpx;
+  text-align: center;
+}
+.toBuy{
+  width: 90%;
+  height: 82rpx;
+  line-height: 82rpx;
+  text-align: center;
+  background: #f71e35;
+  color: #fff;
+  font-size: 28rpx;
+  border-radius: 10rpx;
+}
+.toBuy::after{
+  border: 0;
+}

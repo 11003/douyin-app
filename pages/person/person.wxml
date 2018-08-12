@@ -1,0 +1,66 @@
+<!--pages/person/person.wxml-->
+<view class='head-box'>
+  <view class='head-top'>
+    <view class='head-left'>
+      <image class='head-img' src='{{ avatar }}'></image>
+      <view class='head-name'>{{ name }}</view>
+      <view class='head-info'>{{info}}</view>
+      <view class='head-profile'><text>{{address}}</text><text>{{sex}}</text><text>{{age}}</text></view>
+    </view>
+    <view class='head-right'>
+      <view class='right-btn'>
+        <button class='attention-btn' bindtap='attenPerson' hidden='{{fansShow}}'>关注</button>
+        <button class='attention-btn attention-img' bindtap='cancleAtten' hidden='{{!fansShow}}'><image src='/images/already.png'></image></button>
+        <button class='setting-btn' bindtap='showSettings'><image src='/images/settings.png'></image></button>
+      </view>
+      <view class='right-code'>
+        <image src='{{code}}'></image>
+        <text>微信二维码</text>
+      </view>
+    </view>
+  </view>
+  <view class='head-mess'>
+    <view>获赞<text>{{love}}</text></view>
+    <view bindtap='toFans'>粉丝<text>{{fans}}</text></view>
+    <view bindtap='toAtten'>关注<text>{{atten}}</text></view>
+  </view>
+  <view class='head-label'>
+    <view class='label-box'>
+      <text class='label-item' wx:for="{{labelArr}}" wx:key="">{{item.name}}</text>
+      <text class='add-label' bindtap='toAddLabel'>+添加标签</text>
+    </view>
+  </view>
+</view>
+
+<view class='person-content'>
+  <view wx:for="{{navbar}}" data-idx="{{index}}" class="person-item {{currentTab==index ? 'active' : ''}}" wx:key="unique" bindtap="navbarTap">
+    {{item.name}} <text>({{item.num}})</text>
+  </view>
+</view>
+<view class='nav-box' hidden="{{currentTab!=0}}">
+  <view class='content-item' wx:for="{{photoArr}}" wx:key="">
+    <image src='{{item.src}}' data-id='{{index}}' mode='widthFix' bindtap='previewImg'></image>
+  </view>
+</view> 
+
+<view class='nav-box' hidden="{{currentTab!=1}}">
+  <view class='content-item' wx:for="{{collectArr}}" wx:key="">
+    <image src='{{item.src}}' mode='widthFix'></image>
+    <view class='item-layer'><image src='/images/play.png'></image>3.6w</view>
+  </view>
+</view> 
+  
+<view class='nav-box' hidden="{{currentTab!=2}}">
+  <view class='content-item' wx:for="{{worksArr}}" bindtap='toDetail' data-id='{{item.id}}'  wx:key="">
+    <image src='{{item.src}}' url='{{item.url}}' mode='widthFix'></image>
+    <view class='item-layer'><image src='/images/play.png'></image>{{item.num}}</view>
+  </view>
+</view> 
+
+<view class='fix-box-shadow' bindtap='closeShow' hidden='{{!show}}'></view>
+<view class='fix-setting-box' hidden='{{!show}}'>
+  <image src='/images/close.png' bindtap='closeShow'></image>
+  <navigator url='/pages/personInfo/personInfo'>个人信息</navigator>
+  <navigator url='/pages/Instructions/Instructions'>使用说明</navigator>
+  <navigator url='/pages/userAgreement/userAgreement'>用户协议</navigator>
+</view>

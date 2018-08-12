@@ -1,0 +1,228 @@
+/**app.wxss**/
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+} 
+picker-view{
+  background-color: white;
+  padding: 0;
+  width: 100%; 
+  height: 380rpx;
+  bottom: 0;
+  position: fixed;
+  left: 0;
+  z-index: 50;
+}
+
+picker-view-column view{
+  vertical-align: middle; 
+  color: #3a3a3a;
+  font-size: 24rpx;
+  line-height: 28rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.animation-element-wrapper {
+  display: flex;  
+  position: fixed;
+  left: 0;
+  top:0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 20;
+}
+.animation-element {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  height: 470rpx;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 1);
+}
+.picker-top{
+  text-align: center;
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  overflow: hidden;
+  background: #eee;
+}
+.left-bt,.right-bt{
+  color: #383838;
+  display: block;
+  float: left;
+  margin-top: 20rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  font-size: 24rpx;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.left-bt{
+  margin-left: 30rpx;
+}
+.right-bt {
+  color: #1AAD19;
+  float: right;
+  margin-right: 30rpx;
+}
+
+.pvline{
+  display: block;
+  position: fixed;
+  height: 1rpx;
+  width: 100%;
+  margin-top: 89rpx; 
+  background-color: #eeeeee;
+}
+
+
+
+.user-box,.fans-box{
+  overflow: hidden;
+  background: #fff;
+}
+.user-item,.fans-item{
+  overflow: hidden;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #F7F7F7;
+}
+.userImg,.fansImg{
+  display: block;
+  width: 82rpx;
+  height: 82rpx;
+  border-radius: 50%;
+  margin: 5rpx 20rpx 0 0;
+  float: left;
+}
+.user-info,.fans-info{
+  width: 60%;
+  float: left;
+}
+.user-title,.fans-title{
+  color: #515151;
+  font-size: 26rpx;
+}
+.user-detail,.fans-detail{
+  color: #7e7e7e;
+  font-size: 24rpx;
+  margin: 5rpx 0;
+}
+.user-detail text,.fans-detail text{
+  margin-right: 50rpx;
+}
+.user-detail text:last-child,.fans-detail text:last-child{
+  margin-right: 0;
+}
+.user-profile,.fans-profile{
+  color: #939393;
+  font-size: 22rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.uBtn,.fans-btn{
+  width: 118rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  text-align: center;
+  border-radius: 5rpx;
+  color: #fff;
+  font-size: 26rpx;
+  background: #d50818;
+  float: right;
+  margin-top: 25rpx;
+}
+.uBtn::after,.fans-btn::after{
+  border: 0;
+}
+
+
+.message-item{
+  overflow: hidden;
+  border-bottom: 1rpx solid #F5F5F5;
+  padding: 40rpx 30rpx;
+}
+.mImg,.cImg{
+  width: 15%;
+  float: left;
+}
+.mImg image,.cImg image{
+  display: block;
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+}
+.mRight{
+  width: 85%;
+  float: left;
+}
+.mRight .mTitle{
+  color: #000;
+  font-size: 26rpx;
+  margin-bottom: 5rpx;
+}
+.mRight .mTitle text{
+  color: #7a7a7a;
+  font-size: 22rpx;
+  float: right;
+}
+.mRight .mInfo{
+  color: #505050;
+  font-size: 22rpx;
+}
+
+.comment-box,.love-box{
+  overflow: hidden;
+  background: #fff;
+}
+.comment-item,.love-item{
+  overflow: hidden;
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid #F5F5F5;
+}
+.cImg{
+  padding-top: 30rpx;
+}
+.cCenter{
+  width: 50%;
+  float: left;
+  padding-top: 30rpx;
+}
+.cTitle{
+  color: #000;
+  font-size: 26rpx;
+  margin-bottom: 3rpx;
+}
+.cTitle text{
+  display: inline-block;
+  vertical-align: middle;
+  width: 100rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 8rpx;
+}
+.cTime{
+  color: #727272;
+  font-size: 22rpx;
+}
+.cRight{
+  width: 35%;
+  float: right;
+  overflow: hidden;
+}
+.cRight image{
+  display: block;
+  width: 167rpx;
+  height: 137rpx;
+  float: right;
+}

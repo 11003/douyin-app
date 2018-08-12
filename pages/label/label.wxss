@@ -1,0 +1,48 @@
+/* pages/label/label.wxss */
+page{
+  background: #f7f7f7;
+}
+.label-box{
+  overflow: hidden;
+  padding: 40rpx 30rpx;
+}
+.label{
+  overflow: hidden;
+}
+.label-item{
+  color: #4d4d4d;
+  font-size: 24rpx;
+  margin: 0 15rpx 25rpx 0;
+  float: left;
+  border: 1rpx solid #DADADA;
+  background: #fff;
+  padding: 10rpx 20rpx;
+  border-radius: 10rpx;
+}
+.label-item.active{
+  color: #fff;
+  background: #e1291d;
+  border-color: #e1291d;
+}
+.label-btn{
+  color: #000;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 30rpx;
+  border: 1rpx dashed #D2D2D2;
+  background: #fff;
+  border-radius: 10rpx;
+  margin-top: 60rpx;
+}
+.label-btn text{
+  display: inline-block;
+  height: 34rpx;
+  line-height: 34rpx;
+  vertical-align: middle;
+  font-size: 48rpx;
+  font-weight: lighter;
+  margin: 0 5rpx 14rpx 0;
+}
+.label-btn::after{
+  border: 0;
+}
