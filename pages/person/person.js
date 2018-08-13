@@ -30,7 +30,7 @@ Page({
       { src: ""},
     ],
     collectArr: [
-      { src: "/images/eason.jpg", num: "3.6w" },
+      { src: "", num: "3.6w", url: "", id: "", object_id:"" },
     ],
     worksArr: [
       { src: "", num: "",url:"",id:"" },
@@ -64,6 +64,22 @@ Page({
        })
       }
     })
+    //用户收藏的视频
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/User/fcount',
+      method: 'POST',
+      data: { userid: userid },
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      success: function (res) {
+        var nav = that.data.navbar;
+        nav[1].num = res.data;
+        that.setData({
+          navbar: nav
+        })
+      }
+    })
     //用户发布的视频
     wx.request({
       url: app.d.ceshiUrl + '/Api/User/vcount',
@@ -77,6 +93,30 @@ Page({
         nav[2].num = res.data;
         that.setData({
           navbar: nav
+        })
+      }
+    })
+    //查找用户收藏所有作品
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/User/UserFavorite',
+      method: 'POST',
+      data: { userid: userid },
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      success: function (res) {
+        var user = res.data;
+        var collectArr = [];
+        for (var i in user.id) {
+          collectArr.push({
+            src: user.thumbnail[i],
+            url: user.url[i],
+            id: user.id[i],
+            object_id: user.object_id[i]
+          })
+        }
+        that.setData({
+          collectArr: collectArr
         })
       }
     })
@@ -103,6 +143,7 @@ Page({
             })
           }
         })
+        
        if(res.data.status == 0){
          wx.showToast({
            title: res.data.err,
@@ -291,6 +332,12 @@ Page({
     var id = e.currentTarget.dataset.id;
     wx.navigateTo({
       url: '/pages/video/video?id='+id,
+    })
+  },
+  toFavorite(e){
+    var id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '/pages/video/video?id=' + id,
     })
   }
 })

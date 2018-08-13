@@ -2,7 +2,7 @@
 App({
 
   d: {
-    ceshiUrl: "http://192.168.0.191/dyxcx/public/index.php",
+    ceshiUrl: "http://192.168.0.119/dyxcx/public/index.php",
     userId: 0,
   },
 

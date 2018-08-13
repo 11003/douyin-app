@@ -44,9 +44,9 @@
 </view> 
 
 <view class='nav-box' hidden="{{currentTab!=1}}">
-  <view class='content-item' wx:for="{{collectArr}}" wx:key="">
+  <view class='content-item' wx:for="{{collectArr}}" bindtap='toFavorite' data-id='{{item.object_id}}'  wx:key="">
     <image src='{{item.src}}' mode='widthFix'></image>
-    <view class='item-layer'><image src='/images/play.png'></image>3.6w</view>
+    <view class='item-layer'><image src='/images/play.png'></image>{{item.num}}</view>
   </view>
 </view> 
   

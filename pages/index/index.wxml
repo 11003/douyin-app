@@ -19,23 +19,28 @@
     </cover-view>
     <cover-view class='right-list'>
       <cover-image class='headImg' data-id='{{id}}' bindtap='imgTap' src='{{avatar}}'></cover-image>
+      
+      <!-- 喜欢 -->
       <cover-view class='list-icon'>
-<!-- <view wx:if="{{love == 0}}">
- <cover-image bindtap='toLike' data-love='{{love}}' src='/images/index_icon1_on.png'></cover-image>
-</view>
-<view wx:else>
-<cover-image bindtap='toLike'  data-love='{{love}}' src='/images/index_icon1.png'></cover-image>
-</view> -->
-
-       
-
-        <cover-image bindtap='toLike' wx:if="{{love == 0}}" src='/images/index_icon1_on.png'></cover-image>
-        <cover-image bindtap='cancleLike' wx:else src='/images/index_icon1.png'></cover-image>
+      <view wx:if="{{love == 1}}">
+      <cover-image bindtap='toLike' data-love='{{love}}' src='/images/index_icon1_on.png'></cover-image>
+      </view>
+      <view wx:else>
+      <cover-image bindtap='toLike'  data-love='{{love}}' src='/images/index_icon1.png'></cover-image>
+      </view>
  <cover-view>{{post_like}}</cover-view>
       </cover-view>
+
+      <!-- 收藏 -->
       <cover-view class='list-icon'>
-        <cover-image bindtap='toCollect' wx:if="{{collectShow == true}}"src='/images/index_icon2.png'></cover-image>
-        <cover-image bindtap='cancleCollect' wx:else src='/images/index_icon2_on.png'></cover-image>
+      <view wx:if="{{collectShow == 1}}">
+      <cover-image bindtap='toCollect' data-collectShow='{{collectShow}}' src='/images/index_icon2_on.png'></cover-image>
+      </view>
+      <view wx:else>
+      <cover-image bindtap='toCollect' data-collectShow='{{collectShow}}' src='/images/index_icon2.png'></cover-image>
+      </view>
+        <!-- <cover-image bindtap='toCollect' wx:if="{{collectShow == true}}"src='/images/index_icon2.png'></cover-image>
+        <cover-image bindtap='cancleCollect' wx:else src='/images/index_icon2_on.png'></cover-image> -->
         <cover-view>{{collect}}</cover-view>
       </cover-view>
       <cover-view class='list-icon' bindtap='toComment'>

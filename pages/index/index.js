@@ -19,6 +19,7 @@ Page({
     user_id:'',
     arid:'',
     url:'',
+    thumbnail:'',
     current: 0,
     pages: 0,
     page: 1,
@@ -28,7 +29,7 @@ Page({
     navCurrent: 0,
     love: '',
     post_like:'',
-    collectShow: true,
+    collectShow: '',
     demo:'',
   },
   onLoad: function (options) {
@@ -62,27 +63,6 @@ Page({
             
           }
         })
-        //判断是否用户对该点赞了
-        // wx.request({
-        //   url: app.d.ceshiUrl + '/Api/index/isLike',
-        //   method: 'POST',
-        //   data: { arid: arid },
-        //   header: {
-        //     'content-type': 'application/x-www-form-urlencoded' // 默认值
-        //   },
-        //   success: function (res) {
-        //     var love = '';
-        //     if (res.data == 0) {
-        //       love = 0;
-        //     } else if (res.data == 1) {
-        //       love = 1;
-        //     }
-        //     // that.setData({
-        //     //   love: love
-        //     // })
-        //     console.log(res.data);
-        //   }
-        // })
         var res=res.data;
         //console.log(res);
         that.setData({
@@ -97,8 +77,10 @@ Page({
           id: res[0].id,
           arid:res[0].arid,
           url: res[0].post_content,
+          thumbnail: res[0].thumbnail,
           subjectList: res,
           love:res[0].love,
+          collectShow: res[0].collectShow
         })
         //console.log("shipin");
       
@@ -133,10 +115,11 @@ Page({
   },
   // 点赞
   toLike(e){
-    var url = this.data.url;  //视频地址
-    var arid = this.data.arid;  //视频ID
-    var userid = this.data.user_id; //用户id
-    var love = this.data.love;  //点赞状态
+    var that = this;
+    var url = that.data.url;  //视频地址
+    var arid = that.data.arid;  //视频ID
+    var userid = that.data.user_id; //用户id
+    var love = that.data.love;  //点赞状态
     // console.log("arid"+arid);
     wx.request({
       url: app.d.ceshiUrl + '/Api/index/index',
@@ -146,64 +129,49 @@ Page({
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
       success: function (res) {
-        wx.showToast({
-          title: res.data.msg,
-          duration: 2000,
-        });
+        that.setData({
+          love:res.data
+        })
+        //console.log(res);
       }
     })
-    // wx.request({
-    //   url: app.d.ceshiUrl + '/Api/index/tolike',
-    //   method: 'POST',
-    //   data: { url: url, arid: arid, userid:userid,like:1},
-    //   header: {
-    //     'content-type': 'application/x-www-form-urlencoded' // 默认值
-    //   },
-    //   success:function(res){
-    //     wx.showToast({
-    //       title: res.data.msg,
-    //       duration: 2000,
-    //     });
-    //   }
-    // })
-    // this.setData({
-    //   love: 1
-    // })
     
   },
-  // cancleLike(e){
-  //   var url = this.data.url;
-  //   var arid = this.data.arid;
-  //   var userid = this.data.user_id;
-  //   wx.request({
-  //     url: app.d.ceshiUrl + '/Api/index/tolike',
-  //     method: 'POST',
-  //     data: { url: url, arid: arid, userid: userid ,like:0},
-  //     header: {
-  //       'content-type': 'application/x-www-form-urlencoded' // 默认值
-  //     },
-  //     success: function (res) {
-  //       wx.showToast({
-  //         title: res.data.msg,
-  //         duration: 2000,
-  //       });
-  //     }
-  //   })
-  //   this.setData({
-  //     love: 0
-  //   })
-  // },
+
   // 收藏
   toCollect(e){
-    this.setData({
-      collectShow: false
+    var that = this;
+    var url = that.data.url;  //视频地址
+    var arid = that.data.arid;  //视频ID
+    var userid = that.data.user_id; //用户id
+    var collectShow = that.data.collectShow;  //收藏状态
+    var thumbnail = that.data.thumbnail; //图片
+    var user_nickname = that.data.user_nickname; //用户名
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/index/favorite',
+      method: 'POST',
+      data: { url: url, arid: arid, userid: userid, collectShow: collectShow, thumbnail: thumbnail, user_nickname: user_nickname},
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success: function (res) {
+        wx.showToast({
+          title:res.data.msg,
+          icon: "none",
+          duration: 2000
+        })
+        that.setData({
+          collectShow: res.data
+        })
+        console.log(res);
+      }
     })
   },
-  cancleCollect(e) {
-    this.setData({
-      collectShow: true
-    })
-  },
+  // cancleCollect(e) {
+  //   this.setData({
+  //     collectShow: true
+  //   })
+  // },
   // 购买
   radioSelect(e) {
     var id = e.currentTarget.dataset.id;
@@ -310,29 +278,7 @@ Page({
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
       success:function(res){
-        //that.tolike;
-        //console.log(res.data);
-        //判断视频是否有点赞,有则点赞图标高亮
-        wx.request({
-          url: app.d.ceshiUrl + '/Api/index/isLike',
-          method: 'POST',
-          data: { arid: arid },
-          header: {
-            'content-type': 'application/x-www-form-urlencoded' // 默认值
-          },
-          success: function (res) {
-            // var love = '';
-            // if(res.data == 0){
-            //   love = 0;
-            // }else if(res.data == 1){
-            //   love = 1;
-            // }
-            // that.setData({
-            //   love: list[current].love
-            // })
-            //console.log(res.data);
-          }
-        })
+
       }
     })
     this.setData({
@@ -348,7 +294,9 @@ Page({
       user_nickname: list[current].user_nickname,
       url: list[current].post_content,
       arid: list[current].arid,
-      love:list[current].love
+      love:list[current].love,
+      thumbnail: list[current].thumbnail,
+      collectShow: list[current].collectShow,
     })
     var diff = list.length - current;
     if (diff <= 5) {
