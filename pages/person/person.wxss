@@ -30,6 +30,7 @@
 .head-info{
   color: rgba(255,255,255,.5);
   font-size: 22rpx;
+  height: 16px;
   margin: 10rpx 0;
 }
 .head-profile{

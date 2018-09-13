@@ -14,14 +14,15 @@ Page({
     ],
     avatar : "",
     name: "",
-    info: "",
+    info: "他很懒，还没有个性签名",
     address: "",
-    sex: "",
-    age: "",
-    code: "",
-    love: "",
-    fans: "",
-    atten: "",
+    sex: "保密",
+    age: "18",
+    code: "/images/code.jpg",
+    love: "0",
+    fans: "0",
+    atten: "0",
+    id : "0",
     labelArr: [
       { name: ""}
     ],
@@ -30,7 +31,7 @@ Page({
       { src: ""},
     ],
     collectArr: [
-      { src: "", num: "3.6w", url: "", id: "", object_id:"" },
+      { src: "", num: "", url: "", id: "", object_id:"" },
     ],
     worksArr: [
       { src: "", num: "",url:"",id:"" },
@@ -46,9 +47,9 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
+   app.isLogin();
     var userid = app.d.userId;
-    that.navbarTap;
-    //用户发布的图片
+    //用户发布图片的總數
     wx.request({
       url: app.d.ceshiUrl + '/Api/User/pcount',
       method: 'POST',
@@ -56,31 +57,15 @@ Page({
       header: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      success:function(res){
-        var nav = that.data.navbar;
-        nav[0].num=res.data;
-        that.setData({
-         navbar: nav
-       })
-      }
-    })
-    //用户收藏的视频
-    wx.request({
-      url: app.d.ceshiUrl + '/Api/User/fcount',
-      method: 'POST',
-      data: { userid: userid },
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
       success: function (res) {
         var nav = that.data.navbar;
-        nav[1].num = res.data;
+        nav[0].num = res.data;
         that.setData({
           navbar: nav
         })
       }
     })
-    //用户发布的视频
+    //用户发布视频的總數
     wx.request({
       url: app.d.ceshiUrl + '/Api/User/vcount',
       method: 'POST',
@@ -96,27 +81,20 @@ Page({
         })
       }
     })
-    //查找用户收藏所有作品
+    
+    //用戶收藏的總數
     wx.request({
-      url: app.d.ceshiUrl + '/Api/User/UserFavorite',
+      url: app.d.ceshiUrl + '/Api/User/fcount',
       method: 'POST',
       data: { userid: userid },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       success: function (res) {
-        var user = res.data;
-        var collectArr = [];
-        for (var i in user.id) {
-          collectArr.push({
-            src: user.thumbnail[i],
-            url: user.url[i],
-            id: user.id[i],
-            object_id: user.object_id[i]
-          })
-        }
+        var nav = that.data.navbar;
+        nav[1].num = res.data;
         that.setData({
-          collectArr: collectArr
+          navbar: nav
         })
       }
     })
@@ -129,7 +107,8 @@ Page({
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       success: function (res) {
-        //查找出用户所属标签
+        var user = res.data;
+        //用戶標籤
         wx.request({
           url: app.d.ceshiUrl + '/Api/Message/labellimit',
           method: 'POST',
@@ -137,65 +116,100 @@ Page({
           header: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          success: function(res){
+          success: function (res) {
             that.setData({
               labelArr: res.data
             })
           }
         })
-        
-       if(res.data.status == 0){
-         wx.showToast({
-           title: res.data.err,
-           icon: 'none',
-           duration: 2000
-         });
-       }
-      var user = res.data;
-      //遍历用户发布的所有图片
-      var photoArr = [];
-      for (var i in user.thumbnail) {
-        photoArr.push({
-          src: user.thumbnail[i]
+        //用戶收藏
+        wx.request({
+          url: app.d.ceshiUrl + '/Api/User/UserFavorite',
+          method: 'POST',
+          data: { userid: userid },
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          success: function (res) {
+            var user = res.data;
+            var collectArr = [];
+            for (var i in user) {
+              collectArr.push({
+                src: user[i].thumbnail,
+                url: user[i].url,
+                id: user[i].id,
+                object_id: user[i].object_id
+              })
+            }
+            that.setData({
+              collectArr: collectArr
+            })
+          }
         })
-      }
+        //遍历用户发布的所有图片
+        var photoArr = [];
+        for (var i in user.thumbnail) {
+          var src = [];
+          if(user.thumbnail[i].length == 1){
+            src.push(user.thumbnail[i][0])
+          }else{
+            for (var j in user.thumbnail[i]) {
+              // console.log(user.thumbnail[i][j])
+              src.push(user.thumbnail[i][j])
+            }
+          }
+          photoArr.push({
+            src: src
+          })
+          //console.log(photoArr)
+        }
       //遍历用户发布的所有视频
         var worksArr =[];
-        for (var i in user.thumbnail) {
+        for (var i in user.arid) {
+          var img = [];
+          if (user.thumbnail[i].length == 1){
+            img.push(user.thumbnail[i][0])
+          }else{
+            img.push(user.thumbnail[i][0])
+          }
           worksArr.push({
-            src: user.thumbnail[i],
+            src: img,
             num: user.num[i],
             url: user.post_content[i],
-            id : user.id[i]
+            id : user.arid[i]
           })
         }
         that.setData({
-          name : user.user_nickname,
-          address : user.user_city,
+          id:user.id,
+          name: user.user_nickname,
           avatar: user.avatar,
-          info : user.user_info,
-          age : user.age,
-          code: user.wx_code,
-          love: user.receive_like_counts,
+          age: user.age,
           fans: user.fans_counts,
           atten: user.follow_counts,
+          love: user.receive_like_counts,
+          address: user.user_city,
+          info: user.user_info,
+          code: user.wx_code,
           photoArr: photoArr,
           worksArr: worksArr
-       });
-        if (user.sex == 1) {
-          that.setData({ sex: '男' })
-        } else if (user.sex == 2) {
-          that.setData({ sex: '女' })
+        })
+        //性別
+        if (user.sex == 0) {
+          that.data.sex = '保密'
+        } else if (user.sex == 1) {
+          that.data.sex = '男'
         } else {
-          that.setData({ sex: '保密' })
+          that.data.sex = '女'
         }
+        that.setData({
+          sex: that.data.sex,
+        })
       },
       fail: function (res) {
 
       }
     })
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -279,10 +293,11 @@ Page({
     if (that.data.fansShow == false) {
       that.data.fansShow = true;
       wx.showToast({
-        title: '关注成功',
+        title: '您不能关注自己',
         icon: 'none',
-        duration: 500
+        duration: 2000
       })
+      return false;
     } else {
       that.data.fansShow = false;
     }
@@ -312,19 +327,21 @@ Page({
     }) 
   },
   toAtten(e){
+    var id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '/pages/atten/atten',
+      url: '/pages/atten/atten?id='+id,
     })
   },
   previewImg(e) {
     var id = e.currentTarget.dataset.id;
+    //console.log(this.data.photoArr);
     var picList = [];
-    for (var i = 0; i < this.data.photoArr.length;i++){
-      picList.push(this.data.photoArr[i].src);
+    for (var i = 0; i < this.data.photoArr[id].src.length;i++){
+      picList.push(this.data.photoArr[id].src[i]);
     }
-    console.log("这是图片"+picList)
+    //console.log("这是图片"+picList)
     wx.previewImage({
-      current: this.data.photoArr[id].src, // 当前显示图片的http链接
+      current: this.data.photoArr[id].src[0], // 当前显示图片的http链接
       urls: picList // 需要预览的图片http链接列表
     })
   },

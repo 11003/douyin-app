@@ -2,8 +2,8 @@
 <view class='head-box'>
   <view class='head-top'>
     <view class='head-left'>
-      <image class='head-img' src='{{ avatar }}'></image>
-      <view class='head-name'>{{ name }}</view>
+      <image class='head-img' src='{{avatar}}'></image>
+      <view class='head-name'>{{name}}</view>
       <view class='head-info'>{{info}}</view>
       <view class='head-profile'><text>{{address}}</text><text>{{sex}}</text><text>{{age}}</text></view>
     </view>
@@ -22,7 +22,7 @@
   <view class='head-mess'>
     <view>获赞<text>{{love}}</text></view>
     <view bindtap='toFans'>粉丝<text>{{fans}}</text></view>
-    <view bindtap='toAtten'>关注<text>{{atten}}</text></view>
+    <view bindtap='toAtten' data-id='{{id}}'>关注<text>{{atten}}</text></view>
   </view>
   <view class='head-label'>
     <view class='label-box'>
@@ -39,7 +39,7 @@
 </view>
 <view class='nav-box' hidden="{{currentTab!=0}}">
   <view class='content-item' wx:for="{{photoArr}}" wx:key="">
-    <image src='{{item.src}}' data-id='{{index}}' mode='widthFix' bindtap='previewImg'></image>
+    <image src='{{item.src[0]}}' data-id='{{index}}' mode='widthFix' bindtap='previewImg'></image>
   </view>
 </view> 
 

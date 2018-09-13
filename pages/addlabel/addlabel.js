@@ -44,10 +44,10 @@ Page({
           duration: 2000
         });
         setTimeout(function () {
-          wx.redirectTo({
-            url: '../label/label'
-          });
-        }, 2500);
+          wx.reLaunch({
+            url: "/pages/person/person"
+          })
+        }, 1500);
         return false;
       }
     })

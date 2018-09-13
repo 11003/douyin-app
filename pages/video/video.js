@@ -14,7 +14,7 @@ Page({
     pages: 0,
     page: 1,
     subjectList: [
-      {
+    {
       id: "",
       post_content: "",
       avatar: "",
@@ -23,14 +23,17 @@ Page({
       comment_count: "",
       user_nickname: "",
       post_desc: "",
+      thumbnail:"",
       voice: "",
+      to_userid:"",
+      arid:"",
     },
     ],
     showBtn: false,
     timeLen: 60,
     navCurrent: 0,
-    love: true,
-    collectShow: true
+    love: "",
+    collectShow: "",
   },
   onLoad: function (options) {
     this.loadData(1, this.changeSubject);
@@ -53,8 +56,13 @@ Page({
           post_collect: video.post_collect,
           comment_count: video.comment_count,
           user_nickname: video.user_nickname,
+          thumbnail: video.thumbnail,
           post_desc: video.post_desc,
+          to_userid:video.to_userid,
+          arid:video.arid
         })
+        that.Zan();
+        that.ShouCang();
       },
       fail:function(e){
         wx.showToast({
@@ -64,6 +72,7 @@ Page({
         })
       }
     });
+    //首页通知
     wx.request({
       url: app.d.ceshiUrl + '/Api/message/info',
       method: 'POST',
@@ -75,6 +84,58 @@ Page({
         that.setData({
           voice: res.data.post_content
         })
+      }
+    })
+  },
+  //點讚
+  Zan: function () {
+    var that = this;
+    var userid = app.d.userId;
+    var arid = that.data.arid;  //视频ID
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/Index/zan',
+      method: 'POST',
+      data: { userid: userid, arid: arid, icons: 1 },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success: function (res) {
+        if (res.data.length == 0) {
+          that.setData({
+            love: 0
+          })
+        } else {
+          that.setData({
+            love: 1
+          })
+          return false;
+        }
+      }
+    })
+  },
+  //收藏圖標高亮
+  ShouCang: function () {
+    var that = this;
+    var userid = app.d.userId;
+    var arid = that.data.arid;  //视频ID
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/Index/zan',
+      method: 'POST',
+      data: { userid: userid, arid: arid, icons: 2 },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success: function (res) {
+        if (res.data.length == 0) {
+          that.setData({
+            collectShow: 0
+          })
+        } else {
+          that.setData({
+            collectShow: 1
+          })
+          return false;
+        }
       }
     })
   },
@@ -97,25 +158,68 @@ Page({
     })
   },
   // 点赞
-  toLike(e){
-    this.setData({
-      love: false
-    })
-  },
-  cancleLike(e){
-    this.setData({
-      love: true
+  toLike(e) {
+    var that = this;
+    //登陆进来的用户id
+    var LoginUserid = app.d.userId;
+    var url = that.data.post_content;  //视频地址
+    var arid = that.data.arid;  //视频ID
+    var user_id = that.data.to_userid; //发布者id
+    var love = that.data.love;  //点赞状态
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/Index/tolike',
+      method: 'POST',
+      data: { url: url, arid: arid, LoginUserid: LoginUserid, user_id: user_id, love: love },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success: function (res) {
+        wx.showToast({
+          title: res.data.msg,
+          duration: 2000,
+          icon: 'none'
+        });
+        that.setData({
+          love: res.data.status
+        })
+      }
     })
   },
   // 收藏
-  toCollect(e){
-    this.setData({
-      collectShow: false
-    })
-  },
-  cancleCollect(e) {
-    this.setData({
-      collectShow: true
+  toCollect(e) {
+    var that = this;
+    var LoginUserid = app.d.userId;//登陆进来的用户id
+    var url = that.data.post_content;  //视频地址
+    var arid = that.data.arid;  //视频ID
+    var thumbnail = that.data.thumbnail //视频封面图
+    var user_id = that.data.to_userid; //作者id
+    var name = that.data.user_nickname //作者名称
+    var collectShow = that.data.collectShow; //收藏状态
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/Index/toCollect',
+      method: 'POST',
+      data: {
+        LoginUserid: LoginUserid,
+        url: url,
+        arid: arid,
+        thumbnail: thumbnail,
+        user_id: user_id,
+        name: name,
+        collectShow: collectShow
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success: function (res) {
+        wx.showToast({
+          title: res.data.msg,
+          duration: 2000,
+          icon: 'none'
+        });
+        that.setData({
+          collectShow: res.data.status
+        })
+      }
     })
   },
   // 购买
@@ -138,9 +242,11 @@ Page({
     })
   },
   // 评论
-  toComment(e){
+  toComment(e) {
+    var to_userid = e.currentTarget.dataset.to_userid;
+    var id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '/pages/indexComment/indexComment',
+      url: '/pages/indexComment/indexComment?id=' + id + '&to_userid=' + to_userid,
     })
   },
   play: function () {
@@ -164,8 +270,9 @@ Page({
     this.videoCtx.seek(0);  //重新播放
   },
   imgTap(e){
+    var id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '/pages/person/person',
+      url: '/pages/userinfo/userinfo?id=' + id,
     })
   },
   loadData: function (page, success) {
@@ -278,7 +385,7 @@ Page({
 
 // 获取第一个应用
 function getRecommendList(opt) {
-  console.log("第一个调用");
+
 }
  
 

@@ -1,9 +1,9 @@
 <!--pages/attention/attention.wxml-->
 <view class='attention-box'>
   <view class='atten-item' wx:for="{{attenArr}}" wx:key=''>
-    <image src='{{item.img}}' mode='widthFix'></image>
+    <image src='{{item.img}}' bindtap='toIndex' data-arid='{{item.arid}}' mode='widthFix'></image>
     <view class='aLayer'>
-      <image src='{{item.headImg}}'></image>
+      <image src='{{item.headImg}}' bindtap='toUser' data-to_userid='{{item.to_userid}}'></image>
       <text>{{item.name}}</text>
     </view>
   </view>

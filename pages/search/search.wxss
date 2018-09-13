@@ -110,3 +110,14 @@ page{
   vertical-align: middle;
   margin: 0 10rpx 8rpx 0;
 }
+
+.fans-btn image{
+  display: inline-block;
+  width: 34rpx;
+  height: 33rpx;
+  vertical-align: middle;
+  margin: 0 0 5rpx 0;
+}
+.fans-img{
+  background: #7e7e7e;
+}

@@ -1,0 +1,9 @@
+<!--pages/wxLogin/wxLogin.wxml-->
+<view class='wxLogin'>
+  <image src='/images/weixin.png'></image>
+  <view class='wx-title'>请确认授权以下信息</view>
+  <view class='wx-info'>· 获得你的公开信息（昵称、头像等）</view>
+  <view class='wx-info'>不授权将无法微信登录</view>
+<!-- bindgetuserinfo="bindGetUserInfo" -->
+<button class='wx-btn' open-type="getUserInfo" bindgetuserinfo="getUserInfo">确认授权</button>
+</view>

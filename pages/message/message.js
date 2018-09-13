@@ -29,11 +29,11 @@ Page({
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
       success: function(res){
-        console.log(res);
+        //console.log(res);
         that.setData({
           messageArr: res.data,
         })
-        console.log(that.data.messageArrs);
+        //console.log(that.data.messageArrs);
       }
     })
   },

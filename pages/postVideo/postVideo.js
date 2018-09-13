@@ -39,7 +39,8 @@ Page({
     aShow: false,
     tShow: false,
     vShow: false,
-    pShow: false
+    pShow: false,
+    srcUrl:"",
   },
 
   /**
@@ -92,18 +93,16 @@ Page({
       tempFile: e.detail.value
     })
   },
-  src:function(e){
-    var that = this;
-    that.setData({
-      src: e.detail.value
-    })
-  },
+  //上传
   formSubmitVideo:function(e){
     var that = this;
-    var info =e.detail.value;
-    var user_id = app.d.userId;
-    info.user_id = app.d.userId;//把用户加入表单里
-    if (info.post_desc == 0){
+    var info = e.detail.value;
+    var userid = app.d.userId;
+    info.userid = userid;
+    var src = that.data.src;    //视频
+    var tempFile = that.data.tempFile;   //图片
+    //条件判断
+    if (info.post_desc == 0) {
       wx.showToast({
         title: "您现在此刻的心情是?",
         duration: 2000,
@@ -112,7 +111,7 @@ Page({
       return false;
     }
     var reg = /^(?!\d*$)/;
-    if (!reg.test(info.post_desc)){
+    if (!reg.test(info.post_desc)) {
       wx.showToast({
         title: "不能全是数字呐~",
         duration: 2000,
@@ -128,7 +127,7 @@ Page({
       });
       return false;
     }
-    if(info.checkbox == ''){
+    if (info.checkbox == '') {
       wx.showToast({
         title: "请选择发表栏目~",
         duration: 2000,
@@ -136,125 +135,78 @@ Page({
       });
       return false;
     }
-
-    // 准备上传视频
-    wx.uploadFile({
-      url: app.d.ceshiUrl + '/Api/Profile/video',
-      filePath: that.data.src,
-      name: 'file',
-      formData: {
-        'user_id' : user_id
-      },
-      header: {
-        "Content-Type": "multipart/form-data"
-      },
-      success: function(res){
-        //console.log(res.data);
-        var video = JSON.parse(res.data);
-        info.src = video.code;
-        if (video.status == 0) {
-          wx.showToast({
-            title: '未收到上传的视频',
-            duration: 2000,
-            icon: 'none'
-          });
-          return false;
-        }
-
-        // 确认提交
-        wx.request({
-          url: app.d.ceshiUrl + '/Api/Profile/addPost',
-          method: 'POST',
-          data: info,
-          header: {
-            'content-type': 'application/x-www-form-urlencoded' // 默认值
-          },
-          success: function (res) {
-            var data = res.data.arr;
-            if (res.data.status == 0) {
-              wx.showToast({
-                title: res.data.err,
-                duration: 2000
-              });
-              wx.reLaunch({
-                url: '/pages/index/index',
-              })
-            }else{
-              wx.showToast({
-                title: res.data.arr,
-                duration: 2000
-              });
-            }
-          },
-          fail: function () {
+    if (src != '' && tempFile != '') {
+      // 上传视频
+      wx.uploadFile({
+        url: app.d.ceshiUrl + '/Api/Profile/video',
+        filePath: that.data.src,
+        name: 'file',
+        formData: { userid: userid },
+        header: {
+          "Content-Type": "multipart/form-data"
+        },
+        success: function (res) {
+          var arrsrc = JSON.parse(res.data);
+          //var arrsrc = res.data;
+          if (arrsrc.status != 1) {
             wx.showToast({
-              title: '请填写正确',
-              duration: 2000,
-              icon: 'none'
+              title: '上傳视频失敗',
+              icon: 'none',
+              duration: 2000
             });
             return false;
           }
-        })
-      },
-    })
-    // 准备上传图片
-    wx.uploadFile({
-      url: app.d.ceshiUrl + '/Api/Profile/photo',
-      filePath: that.data.tempFile,
-      name: 'file',
-      formData: {
-        'user_id': user_id
-      },
-      header: {
-        "Content-Type": "multipart/form-data"
-      },
-      success: function (res) {
-        var info = e.detail.value;//表单里的所有值
-        var photo = JSON.parse(res.data);
-        info.tempFile = photo.code;
-        if (photo.status == 0) {
-          wx.showToast({
-            title: photo.err,
-            duration: 2000,
-            icon: 'none'
-          });
-          return false;
-        }
-        // 确认提交
-        wx.request({
-          url: app.d.ceshiUrl + '/Api/Profile/addPost',
-          method: 'POST',
-          data: info,
-          header: {
-            'content-type': 'application/x-www-form-urlencoded' // 默认值
-          },
-          success: function (res) {
-            var data = res.data.arr;
-            if (res.data.status != 0) {
-              wx.showToast({
-                title: res.data.arr,
-                duration: 2000
-              });
-              wx.reLaunch({
-                url: '/pages/index/index',
-              })
+          var src = arrsrc.code;
+          info.src = src;
+          //上传图片
+          wx.uploadFile({
+            url: app.d.ceshiUrl + '/Api/Upload/index',
+            filePath: that.data.tempFile,
+            name: 'file',
+            formData: { userid: userid},
+            header: {
+              "Content-Type": "multipart/form-data"
+            },
+            success:function(res){
+              var arrtempFile = JSON.parse(res.data);
+              //var arrtempFile = res.data;
+              var tempFile = arrtempFile.code;
+              info.tempFile = tempFile;
+              if(info != ''){
+                //提交
+                wx.request({
+                  url: app.d.ceshiUrl + '/Api/Profile/addPost',
+                  method: 'POST',
+                  data: info,
+                  header: {
+                    'content-type': 'application/x-www-form-urlencoded' // 默认值
+                  },
+                  success:function(res){
+                    var res = res.data;
+                    console.log(res);
+                    if (res.status == 1) {
+                      wx.showToast({
+                        title: res.msg,
+                        duration: 2000,
+                        icon:'success'
+                      });
+                      setTimeout(function () {
+                        wx.reLaunch({
+                          url: "/pages/index/index"
+                        })
+                      }, 2000);
+                    }
+                  }
+                })
+              }
             }
-          },
-          fail: function () {
-            wx.showToast({
-              title: '请填写正确',
-              duration: 2000,
-              icon: 'none'
-            });
-            return false;
-          }
-        })
-      }
-    });
-    
+          })
+        }
+      })
+    }
   },
   /**
-   * 图片上传
+   * 多张图片上传
    */
   formSubmitPhoto:function(e){
     var that = this;
@@ -278,20 +230,17 @@ Page({
       return false
     }
     var image = [];
-    var user_id = app.d.userId;//用户所属id
     var info = e.detail.value;//表单里的所有值
-    info.user_id = app.d.userId;//把用户加入表单里
+    var userid = app.d.userId;
+    info.userid = userid;//把用户加入表单里
     if (that.data.picLists.length > 0){
       for (var i = 0; i < that.data.picLists.length; i++){
-        //console.log(that.data.picLists[i]);
         // 准备上传多图
         wx.uploadFile({
           url: app.d.ceshiUrl + '/Api/Upload/index',
           filePath: that.data.picLists[i],
           name: 'file',
-          formData: {
-            'user_id': user_id
-          },
+          formData: { userid: userid},
           header: {
             'content-type': 'multipart/form-data'
           },
@@ -310,26 +259,26 @@ Page({
                   'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 success: function(res){
-                  if (res.data.status == 0) {
+                  var res = res.data;
+                  if (res.status == 0) {
                     wx.showToast({
-                      title: res.data.err,
+                      title: res.msg,
                       duration: 2000
                     });
                     return false;
                   }
-                  var data = res.data.arr;
-                  console.log(data);
-                  that.setData({
-                    user_id: data.user_id,
-                    post_desc: data.post_desc,
-                    image: data.image,
-                  });
-                  wx.showToast({
-                  title: "发布成功",
-                  duration: 2000,
-                  icon: 'success'
-                });
-                return false;
+                  if(res.status == 1){
+                    wx.showToast({
+                      title: res.msg,
+                      duration: 2000
+                    });
+                    setTimeout(function () {
+                      wx.reLaunch({
+                        url: "/pages/person/person"
+                      });
+                    }, 1000);
+                    return false;
+                  }
                 }
               })
             }
@@ -346,25 +295,26 @@ Page({
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         success: function (res) {
-          if (res.data.status == 0) {
+          var res = res.data;
+          if (res.status == 0) {
             wx.showToast({
-              title: res.data.err,
+              title: res.msg,
               duration: 2000
             });
             return false;
           }
-          var data = res.data.arr;
-          that.setData({
-            user_id: data.user_id,
-            post_desc: data.post_desc,
-            image: data.image,
-          });
-          wx.showToast({
-            title: "发布成功",
-            duration: 2000,
-            icon: 'success'
-          });
-          return false;
+          if (res.status == 1) {
+            wx.showToast({
+              title: res.msg,
+              duration: 2000
+            });
+            setTimeout(function () {
+              wx.reLaunch({
+                url: "/pages/person/person"
+              });
+            }, 1000);
+            return false;
+          }
         }
       })
     }
@@ -546,12 +496,18 @@ Page({
       maxDuration: 60,
       camera: 'back',
       success: function (res) {
-        console.log("获取视频文件路径:"+res.tempFilePath);
+        console.log("获取视频文件路径:" + res.tempFilePath);
+        if (res.tempFilePath){
+          that.data.Vshow = false;
+        }else{
+          that.data.Vshow = true;
+        }
         that.setData({
           src: res.tempFilePath,
-          Vshow: true,
+          Vshow: that.data.Vshow,
         })
       }
     })
+
   }
 })

@@ -17,7 +17,6 @@ Page({
         fansShow: ""
       },
     ],
-    userid:"",
     id:"",
   },
 
@@ -27,8 +26,9 @@ Page({
   onLoad: function (options) {
     var that = this;
     var id = options.id;
+    var userid = app.d.userid;
     wx.request({
-      url: app.d.ceshiUrl + '/Api/User/useratten',
+      url: app.d.ceshiUrl + '/Api/Userinfo/useratten',
       method: 'POST',
       data: { id: id },
       header: {
@@ -121,10 +121,18 @@ Page({
       attenArr: that.data.attenArr
     })
   },
-  cancleAtten(e) {
+  cancleAtten(e){
+    wx.showToast({
+      title: '不允许操作',
+      icon: 'none',
+      duration: 500
+    })
+  },
+  cancleAtten1(e) {
     var that = this;
     var idx = e.currentTarget.dataset.show;
-    var id = that.data.id;
+    var id  = that.data.id;
+    var userid = app.d.userid;
     var attenArr = that.data.attenArr;
     var to_userid = [];
     for (var i in attenArr){
@@ -132,17 +140,17 @@ Page({
     }
     if (that.data.attenArr[idx].fansShow == true) {
       wx.request({
-        url: app.d.ceshiUrl  + '/Api/User/delete',
+        url: app.d.ceshiUrl  + '/Api/Userinfo/delete',
         method: 'POST',
         header: {
           'content-type': 'application/x-www-form-urlencoded' // 默认值
         },
-        data: { id: id,to_userid:to_userid[idx]},
+        data:{id:id,to_userid:to_userid[idx]},
         success:function(res){
           that.data.attenArr[idx].fansShow = false
           wx.showToast({
             title: res.data.msg,
-            icon: 'success',
+            icon: 'none',
             duration: 500
           })
         }

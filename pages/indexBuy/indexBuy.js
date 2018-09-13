@@ -72,4 +72,15 @@ Page({
       delta: 1
     })
   },
+  radioSelect(e){
+    var idx = e.currentTarget.dataset.id;
+    var that = this;
+    for (var i in that.data.items){
+      that.data.items[i].checked = false;
+    }
+    that.data.items[idx].checked = true;
+    that.setData({
+      items: that.data.items
+    })
+  }
 })

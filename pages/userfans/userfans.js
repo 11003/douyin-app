@@ -15,7 +15,7 @@ Page({
         info: "", 
         fansShow: '',
         uid:"",  //粉丝id
-        to_userid:"",  //我的id
+        id:"",  //我的id
       },
     ]
   },
@@ -25,11 +25,11 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-    var userid = app.d.userId; //我的id
+    var id = options.id;
     wx.request({
-      url: app.d.ceshiUrl + '/Api/Fans/fans',
+      url: app.d.ceshiUrl + '/Api/Userinfo/userfans',
       method: 'POST',
-      data: { userid: userid },
+      data: { id: id},
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
@@ -117,6 +117,8 @@ Page({
     for (var i in arr){
       fansShow.push(arr[i].fansShow);
       my_to_userid.push(arr[i].uid);
+      my_to_username.push(arr[i].userName);
+      my_to_avatar.push(arr[i].headImg)
     }
     wx.request({
       url: app.d.ceshiUrl + '/Api/Fans/attenPerson',
@@ -125,6 +127,8 @@ Page({
         userid: userid, 
         fansShow: fansShow[idx], 
         my_to_userid: my_to_userid[idx],
+        my_to_username: my_to_username[idx],
+        my_to_avatar:my_to_avatar[idx]
       },
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值

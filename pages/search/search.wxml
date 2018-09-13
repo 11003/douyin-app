@@ -34,7 +34,13 @@
         <view class='user-detail'><text>粉丝:{{item.fans}}</text><text>作品:{{item.work}}</text></view>
         <view class='user-profile'>{{item.info}}</view>
       </view>
-      <button class='uBtn'>关注</button>
+      <!-- <view wx:if='{{item.isshow == 1}}'>
+      <button class='uBtn' data-id='{{item.id}}' data-idx='{{index}}' bindtap='toConcern'>关注</button>
+      </view>
+      <view wx:else>
+      <button class='fans-btn fans-img' bindtap='toConcern' data-id='{{item.id}}' data-idx="{{index}}"><image src='/images/already.png'></image></button>
+      </view> -->
+      <button class='uBtn' data-id='{{item.id}}' data-idx='{{index}}' bindtap='toConcern'>关注</button>
     </view>
   </view>
 </view>

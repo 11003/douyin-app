@@ -24,9 +24,11 @@ Page({
    */
   data: {
     headImg: "",  //头像
+    yuan_headImg:"",
 
     picFile:"",   //二维码
-    
+    yuan_picFile:"",
+
     money: "",    //金额
     
     address:"",   //地址
@@ -35,12 +37,14 @@ Page({
     age: "",
     profile: "",  //个人介绍
     sexArr: [
-      { name: "baomi" ,info: "保密" },
-      { name: "male", info: "男", checked: 'true'},
-      { name: "female", info: "女" }
+      { name: "baomi" ,info: "保密",value:0 },
+      { name: "male", info: "男",value:1},
+      { name: "female", info: "女",value:2 }
     ],
     sexTxt: "",
-    noImg: true,
+    noImg: "",
+    code:'',
+    Img:'',
 
     show: show,
 
@@ -77,14 +81,6 @@ Page({
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
       success: function(res){
-        if (res.data.status == 0) {
-          wx.showToast({
-            title: res.data.err,
-            icon: 'none',
-            duration: 2000
-          });
-        }
-        // console.log(res.data);
         var user = res.data;
         that.setData({
           username :user.user_nickname,
@@ -92,12 +88,32 @@ Page({
           money: user.balance,         //金额
           profile: user.user_info,     //个性签名
           headImg: user.avatar,        //头像
+          yuan_headImg:user.avatar,    //原頭像
           picFile: user.wx_code,       //微信二维码
-          sexTxt: user.sex,
+          yuan_picFile: user.wx_code,   //原微信二维码
           save_province: user.user_provinces,
-          save_city: user.user_citys
+          save_city: user.user_citys,
         });
-        console.log(user.user_provinces);
+        //二維碼圖標
+        if (user.wx_code){
+          that.data.noImg = false
+        }else{
+          that.data.noImg = true
+        }
+        that.setData({
+          noImg: that.data.noImg
+        })
+        //性別
+        if(user.sex == 0){
+          that.data.sexTxt = '保密'
+        }else if(user.sex == 1){
+          that.data.sexTxt = '男'
+        }else{
+          that.data.sexTxt = '女'
+        }
+        that.setData({
+          sexTxt: that.data.sexTxt
+        })
       },
       fail: function (e) {
         wx.showToast({
@@ -138,6 +154,7 @@ Page({
   bindSexChange: function (e) {
     var id = e.detail.value;
     var sex = this.data.sexArr[id].info;
+    var sexvalue = this.data.sexArr[id].value;
     this.setData({
       sexTxt: sex
     });
@@ -156,7 +173,8 @@ Page({
         var tempFilePaths = res.tempFilePaths;
         // console.log(tempFilePaths);
         that.setData({
-          headImg: tempFilePaths
+          headImg: tempFilePaths,
+          Img:1
         })
       }
     })
@@ -175,7 +193,8 @@ Page({
         // console.log(tempFilePaths); 获取图片途径
         that.setData({
           picFile: tempFilePaths,
-          noImg: false,
+          noImg: '',
+          Img:2,
         })
       }
     })
@@ -186,8 +205,25 @@ Page({
   formSubmit: function (e) {
     var that = this;
     var info = e.detail.value;
+    var userid = app.d.userId;
+    info.userid = app.d.userId; //用户id
+    var headImg = that.data.headImg[0]; //頭像 h值
+    var picFile = that.data.picFile[0]; //二維碼
+
+    var headUrl = that.data.headImg; //頭像網址
+    var picUrl = that.data.picFile; //二維碼網址
+    var Img = that.data.Img;
+    info.save_province = that.data.save_province;
+    info.save_city = that.data.save_city;
+    var province = info.save_province;
+    var city = info.save_city;
+    var address = info.address;
+    var userName = info.userName;
+    var profile = info.profile;
+    var sex = info.sex;
+    var age = info.age;
     //console.log(info); //返回用户所有值
-    if (info.userName.length == 0) {
+    if (userName.length == 0) {
       wx.showToast({
         title: "名称不能为空",
         duration: 2000,
@@ -195,7 +231,7 @@ Page({
       });
       return false;
     }
-    if (info.age.length == 0) {
+    if (age.length == 0) {
       wx.showToast({
         title: "年龄不能为空",
         duration: 2000,
@@ -204,7 +240,7 @@ Page({
       return false;
     }
     var reg = /^(?:[1-9][0-9]?|1[01][0-9]|120)$/;
-    if (!reg.test(info.age)) {
+    if (!reg.test(age)) {
       wx.showToast({
         title: "年龄格式错误",
         duration: 2000,
@@ -212,33 +248,330 @@ Page({
       });
       return false
     }
-    if (that.data.picFile == '' || that.data.headImg == ''){
-      wx.showToast({
-        title: "请上传二维码 or 头像~",
-        duration: 2000,
-        icon: 'none'
-      });
-      return false
-    }
+
     // 准备上传
-    var user_id = app.d.userId;
-    info.user_id = app.d.userId; //用户id
-    info.picFile=that.data.picFile;  //二维码
-    info.headImg = that.data.headImg; //头像
-    info.province=that.data.province; //省份
-    info.city=that.data.city;   //城市
-    wx.request({
-      url: app.d.ceshiUrl + '/Api/User/edit',
-      method: 'POST',
-      data: info,
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      success: function (res) {
-        console.log("结果是:"+res);
+    //如果用戶更改了頭像并也修改了二維碼才會觸發
+    if (that.data.yuan_headImg != headUrl && that.data.yuan_picFile != picUrl) {
+      wx.uploadFile({
+        url: app.d.ceshiUrl + '/Api/Profile/photo',
+        filePath: that.data.headImg[0],
+        formData: { userid: userid },
+        name: 'file',
+        header: {
+          "Content-Type": "multipart/form-data"
+        },
+        success:function(res){
+          wx.uploadFile({
+            url: app.d.ceshiUrl + '/Api/Profile/photo',
+            filePath: that.data.picFile[0],
+            formData: { userid: userid },
+            name: 'file',
+            header: {
+              "Content-Type": "multipart/form-data"
+            },
+            success:function(res){
+              var arrpicFile = JSON.parse(res.data);
+              if (arrpicFile.status != 1) {
+                wx.showToast({
+                  title: '上傳失敗',
+                  icon: 'none',
+                  duration: 2000
+                });
+                return false;
+              }
+              var picFile = arrpicFile.code;
+              wx.request({
+                url: app.d.ceshiUrl + '/Api/User/picFile',
+                method: 'POST',
+                data: {
+                  userid: userid,
+                  province: province,
+                  city: city,
+                  address: address,
+                  userName: userName,
+                  profile: profile,
+                  sex: sex,
+                  age: age,
+                  picFile: picFile
+                },
+                header: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                success: function (res) {
+                  if (res.data.status != 1) {
+                    wx.showToast({
+                      title: res.data.msg,
+                      icon: 'none',
+                      duration: 2000
+                    });
+                    return false;
+                  }
+                  wx.showToast({
+                    title: res.data.msg,
+                    icon: 'none',
+                    duration: 2000
+                  });
+                  setTimeout(function () {
+                    wx.reLaunch({
+                      url: "/pages/person/person"
+                    })
+                  }, 2000);
+                }
+              })
+            }
+          });
+          var arrheadImg = JSON.parse(res.data);
+          if (arrheadImg.status != 1) {
+            wx.showToast({
+              title: '上傳失敗',
+              icon: 'none',
+              duration: 2000
+            });
+            return false;
+          }
+          //返回頭像路徑
+          var headImg = arrheadImg.code;
+          wx.request({
+            url: app.d.ceshiUrl + '/Api/User/headImg',
+            method: 'POST',
+            data: {
+              userid: userid,
+              province: province,
+              city: city,
+              address: address,
+              userName: userName,
+              profile: profile,
+              sex: sex,
+              age: age,
+              headImg: headImg,
+            },
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            success:function(res){
+              if (res.data.status != 1) {
+                wx.showToast({
+                  title: res.data.msg,
+                  icon: 'none',
+                  duration: 2000
+                });
+                return false;
+              }
+              wx.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                duration: 2000
+              });
+              setTimeout(function () {
+                wx.reLaunch({
+                  url: "/pages/person/person"
+                })
+              }, 2000);
+            },
+            fail:function(e){
+              wx.showToast({
+                  title: '网络异常！',
+                  duration: 2000
+              });
+            }
+          })
+        }
+      })
+    }
+    //如果用戶更改了其中一項才會觸發
+    else if (that.data.yuan_headImg != headUrl || that.data.yuan_picFile != picUrl){
+      if (Img == 1) {
+        wx.uploadFile({
+          url: app.d.ceshiUrl + '/Api/Profile/photo',
+          filePath: that.data.headImg[0],
+          name: 'file',
+          formData: { userid: userid },
+          header: {
+            "Content-Type": "multipart/form-data"
+          },
+          success: function (res) {
+            var arr1 = JSON.parse(res.data);
+            if (arr1.status != 1) {
+              wx.showToast({
+                title: arr1.msg,
+                icon: 'none',
+                duration: 2000
+              });
+              return false;
+            }
+            //返回頭像路徑
+            var headImg = arr1.code;
+            var picUrl = that.data.picFile;
+            wx.request({
+              url: app.d.ceshiUrl + '/Api/User/edit',
+              method: 'POST',
+              data: {
+                Img: 1,
+                userid: userid,
+                province: province,
+                city: city,
+                address: address,
+                userName: userName,
+                profile: profile,
+                sex: sex,
+                age: age,
+                headImg: headImg,
+                picUrl: picUrl
+              },
+              header: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              success: function (res) {
+                if (res.data.status != 1) {
+                  wx.showToast({
+                    title: res.data.msg,
+                    icon: 'none',
+                    duration: 2000
+                  });
+                  return false;
+                }
+                wx.showToast({
+                  title: res.data.msg,
+                  icon: 'none',
+                  duration: 2000
+                });
+                setTimeout(function () {
+                  wx.reLaunch({
+                    url: "/pages/person/person"
+                  })
+                }, 2000);
+              },
+              fail: function (e) {
+                wx.showToast({
+                  title: '网络异常！',
+                  duration: 2000
+                });
+              }
+            });
+          }
+        })
+
+      } else if (Img == 2) {
+        //用戶上傳了二維碼
+        wx.uploadFile({
+          url: app.d.ceshiUrl + '/Api/Profile/photo',
+          filePath: that.data.picFile[0],
+          name: 'file',
+          formData: { userid: userid },
+          header: {
+            "Content-Type": "multipart/form-data"
+          },
+          success: function (res) {
+            var arr2 = JSON.parse(res.data);
+            if (arr2.status != 1) {
+              wx.showToast({
+                title: arr2.msg,
+                icon: 'none',
+                duration: 2000
+              });
+              return false;
+            }
+            //返回二維碼路徑
+            var picFile = arr2.code;
+            wx.request({
+              url: app.d.ceshiUrl + '/Api/User/edit',
+              method: 'POST',
+              data: {
+                Img: 2,
+                userid: userid,
+                province: province,
+                city: city,
+                profile: profile,
+                address: address,
+                userName: userName,
+                sex: sex,
+                age: age,
+                picFile: picFile,
+                headUrl: headUrl,
+              },
+              header: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              success: function (res) {
+                if (res.data.status != 1) {
+                  wx.showToast({
+                    title: res.data.msg,
+                    icon: 'none',
+                    duration: 2000
+                  });
+                  return false;
+                }
+                wx.showToast({
+                  title: res.data.msg,
+                  icon: 'none',
+                  duration: 2000
+                });
+                setTimeout(function () {
+                  wx.reLaunch({
+                    url: "/pages/person/person"
+                  })
+                }, 2000);
+              },
+              fail:function(e){
+              wx.showToast({
+                  title: '网络异常！',
+                  duration: 2000
+              });
+            }
+            })
+          }
+        })
       }
-    })
- 
+    }
+    // 用戶只想修改文字信息
+    else{
+      wx.request({
+        url: app.d.ceshiUrl + '/Api/User/editTxt',
+        method: 'POST',
+        data: {
+          userid: userid,
+          province: province,
+          city: city,
+          profile: profile,
+          address: address,
+          userName: userName,
+          sex: sex,
+          age: age,
+          picUrl: picUrl,
+          headUrl: headUrl,
+        },
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          if (res.data.status != 1) {
+            wx.showToast({
+              title: res.data.msg,
+              icon: 'none',
+              duration: 2000
+            });
+            return false;
+          }
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'none',
+            duration: 2000
+          });
+          setTimeout(function () {
+            wx.reLaunch({
+              url: "/pages/person/person"
+            })
+          }, 2000);
+        },
+        fail:function(e){
+          wx.showToast({
+              title: '网络异常！',
+              duration: 2000
+          });
+        }
+      })
+    }
+
   },
   //移动按钮点击事件
   translate: function (e) {

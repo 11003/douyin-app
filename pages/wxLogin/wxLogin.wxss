@@ -1,0 +1,36 @@
+/* pages/wxLogin/wxLogin.wxss */
+.wxLogin{
+  overflow: hidden;
+  padding: 120rpx 20rpx 20rpx;
+}
+.wxLogin image{
+  display: block;
+  width: 140rpx;
+  height: 140rpx;
+  margin: 0 auto 50rpx;
+}
+.wxLogin .wx-title{
+  color: #2d2d2d;
+  font-size: 28rpx;
+  text-align: center;
+  margin-bottom: 10rpx;
+}
+.wxLogin .wx-info{
+  color: #868686;
+  font-size: 24rpx;
+  text-align: center;
+}
+.wxLogin .wx-btn{
+  display: block;
+  width: 365rpx;
+  height: 74rpx;
+  line-height: 74rpx;
+  background: #03bd01;
+  color: #fff;
+  font-size: 24rpx;
+  border-radius: 10rpx;
+  margin-top: 100rpx;
+}
+.wxLogin .wx-btn::after{
+  border: 0;
+}

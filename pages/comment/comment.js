@@ -1,4 +1,5 @@
 // pages/comment/comment.js
+const app = getApp();
 Page({
 
   /**
@@ -6,12 +7,7 @@ Page({
    */
   data: {
     commentArr:[
-      { head: "/images/head.png", name: "薛洁洁...", info: "可以在哪里看呀!", time: "06-19", img: "/images/xzq.jpg" },
-      { head: "/images/head.png", name: "薛洁洁...", info: "好漂亮，这个是哪里了呀!", time: "06-19", img: "/images/xzq.jpg" },
-      { head: "/images/head.png", name: "薛洁洁...", info: "可以在哪里看呀!", time: "06-19", img: "/images/xzq.jpg" },
-      { head: "/images/head.png", name: "薛洁洁...", info: "好漂亮，这个是哪里了呀!", time: "06-19", img: "/images/xzq.jpg" },
-      { head: "/images/head.png", name: "薛洁洁...", info: "可以在哪里看呀!", time: "06-19", img: "/images/xzq.jpg" },
-      { head: "/images/head.png", name: "薛洁洁...", info: "好漂亮，这个是哪里了呀!", time: "06-19", img: "/images/xzq.jpg" }
+      { head: "", name: "", info: "", time: "", img: "" },
     ]
   },
 
@@ -19,7 +15,32 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    var that = this;
+    var userid = app.d.userId; //评论者id
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/Message/comment',
+      method: 'POST',
+      data: { userid: userid },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success:function(res){
+        var res = res.data;
+        var commentArr = [];
+        for(var i in res){
+          commentArr.push({
+            head: res[i].avatar,
+            name: res[i].user_nickname,
+            info: res[i].content,
+            time: res[i].create_time,
+            img:  res[i].thumbnail
+          })
+          that.setData({
+            commentArr: commentArr
+          })
+        }
+      } 
+    })
   },
 
   /**

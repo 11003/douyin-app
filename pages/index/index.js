@@ -1,4 +1,3 @@
-//index.js
 //获取应用实例
 const app = getApp();
 // http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400
@@ -9,91 +8,68 @@ Page({
     videoCtx: null,
     isPlay: true,
     percent: 0,
-    post_content:'',
-    post_desc:'',
-    avatar:'',
-    comment_count:'',
-    voice:'',
-    user_nickname:'',
-    id:'',
-    user_id:'',
-    arid:'',
-    url:'',
-    thumbnail:'',
+    subject: [],
     current: 0,
     pages: 0,
     page: 1,
-    subjectList:[],
+    icons:'',
+
+    subjectList: [],
+    id: '',
+    url: '',
+    headImg: "",
+    like: "",
+    collect: "",
+    comment: "",
+    voice: "",
+    name: "",
+    commit: "",
+    user_id:'',
+    thumbnail:'',
+    list_arid:'',
+
     showBtn: false,
     timeLen: 60,
     navCurrent: 0,
     love: '',
-    post_like:'',
+    favorite:'',
     collectShow: '',
-    demo:'',
+
+    
   },
   onLoad: function (options) {
-    //提起下拉的视频
+    app.isLogin();
     this.loadData(1, this.changeSubject);
     var that = this;
-    var userid = app.d.userId;
-    var arid = that.data.arid;
-    var demo = that.data.demo;
-    //console.log(userid);
+    //首页通知
+    that.Comment();
     wx.request({
-      url: app.d.ceshiUrl + '/Api/index/index',
+      // 必需
+      url: app.d.ceshiUrl + '/Api/Index/index',
       method: 'POST',
-      data:{demo:1},
+      data: {},
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
-      success:function(res){
-        wx.request({
-          url: app.d.ceshiUrl + '/Api/message/info',
-          method: 'POST',
-          data: { voice : 1},
-          header: {
-            'content-type': 'application/x-www-form-urlencoded' // 默认值
-          },
-          success:function(res){
-           
-            that.setData({
-              voice: res.data.post_content
-            })
-            
-          }
-        })
-        var res=res.data;
-        //console.log(res);
+      success: function(res) {
+        var res = res.data;
         that.setData({
-          //页面一加载就出现的信息 id就是user_id
-          post_content: res[0].post_content,
-          post_desc: res[0].post_desc,
-          post_like:res[0].post_like,
-          avatar: res[0].avatar,
-          comment_count: res[0].comment_count,
-          user_nickname: res[0].user_nickname,
-          user_id: res[0].user_id,
-          id: res[0].id,
-          arid:res[0].arid,
-          url: res[0].post_content,
-          thumbnail: res[0].thumbnail,
           subjectList: res,
-          love:res[0].love,
-          collectShow: res[0].collectShow
+          id: res[0].arid,
+          url: res[0].post_content,
+          headImg: res[0].avatar,
+          like: res[0].post_like,
+          collect: res[0].post_favorites,
+          comment: res[0].comment_count,
+          commit:res[0].post_desc,
+          name: res[0].user_nickname,
+          user_id: res[0].user_id,
+          thumbnail: res[0].thumbnail,
         })
-        //console.log("shipin");
-      
-        console.log(res);
+        that.Zan();
+        that.ShouCang();
       },
-      fail:function(e){
-        wx.showToast({
-          title: '请先登录!',
-          duration: 2000,
-          icon: 'loading'
-        })
-      }
-    });
+    })
   },
   onReady: function() {
     this.videoCtx = wx.createVideoContext('myVideo');
@@ -103,11 +79,82 @@ Page({
       url: '/pages/search/search',
     })
   },
+  //點讚
+  Zan:function(){
+    var that = this;
+    var userid = app.d.userId;
+    var arid = that.data.id;  //视频ID
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/Index/zan',
+      method: 'POST',
+      data: { userid: userid, arid: arid,icons:1},
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success: function (res) {
+        if (res.data.length == 0) {
+          that.setData({
+            love: 0
+          })
+        } else {
+          that.setData({
+            love: 1
+          })
+          return false;
+        }
+      }
+    })
+  },
+  //收藏圖標高亮
+  ShouCang:function(){
+    var that = this;
+    var userid = app.d.userId;
+    var arid = that.data.id;  //视频ID
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/Index/zan',
+      method: 'POST',
+      data: { userid: userid, arid: arid, icons: 2 },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success: function (res) {
+        if (res.data.length == 0) {
+          that.setData({
+            collectShow: 0
+          })
+        } else {
+          that.setData({
+            collectShow: 1
+          })
+          return false;
+        }
+      }
+    })
+  },
+  //通知
+  Comment:function(){
+    var that = this;
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/message/info',
+      method: 'POST',
+      data: { voice: 1 },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success: function (res) {
+        that.setData({
+          voice: res.data.post_content
+        })
+      }
+    })
+  },
+  //推荐
   recommendShow(e){
     this.setData({
       navCurrent: 0
     })
   },
+  //周边
   Surrounding(e){
     this.setData({
       navCurrent: 1
@@ -116,62 +163,72 @@ Page({
   // 点赞
   toLike(e){
     var that = this;
+    //登陆进来的用户id
+    var LoginUserid = app.d.userId;
     var url = that.data.url;  //视频地址
-    var arid = that.data.arid;  //视频ID
-    var userid = that.data.user_id; //用户id
+    var arid = that.data.id;  //视频ID
+    var user_id = that.data.user_id; //发布者id
     var love = that.data.love;  //点赞状态
-    // console.log("arid"+arid);
     wx.request({
-      url: app.d.ceshiUrl + '/Api/index/index',
+      url: app.d.ceshiUrl + '/Api/Index/tolike',
       method: 'POST',
-      data: { url: url, arid: arid, userid: userid, love: love, demo:2},
-      header: {
-        'content-type': 'application/x-www-form-urlencoded' // 默认值
-      },
-      success: function (res) {
-        that.setData({
-          love:res.data
-        })
-        //console.log(res);
-      }
-    })
-    
-  },
-
-  // 收藏
-  toCollect(e){
-    var that = this;
-    var url = that.data.url;  //视频地址
-    var arid = that.data.arid;  //视频ID
-    var userid = that.data.user_id; //用户id
-    var collectShow = that.data.collectShow;  //收藏状态
-    var thumbnail = that.data.thumbnail; //图片
-    var user_nickname = that.data.user_nickname; //用户名
-    wx.request({
-      url: app.d.ceshiUrl + '/Api/index/favorite',
-      method: 'POST',
-      data: { url: url, arid: arid, userid: userid, collectShow: collectShow, thumbnail: thumbnail, user_nickname: user_nickname},
+      data: { url: url, arid: arid, LoginUserid: LoginUserid, user_id:user_id, love: love },
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
       success: function (res) {
         wx.showToast({
-          title:res.data.msg,
-          icon: "none",
-          duration: 2000
-        })
+          title: res.data.msg,
+          duration: 2000,
+          icon: 'none'
+        });
         that.setData({
-          collectShow: res.data
+          love: res.data.status
         })
-        console.log(res);
+        that.onLoad();
       }
     })
   },
-  // cancleCollect(e) {
-  //   this.setData({
-  //     collectShow: true
-  //   })
-  // },
+  
+  // 收藏
+  toCollect(e){
+    var that = this;
+    var LoginUserid = app.d.userId;//登陆进来的用户id
+    var url = that.data.url;  //视频地址
+    var arid = that.data.id;  //视频ID
+    var url = that.data.url; //视频地址
+    var thumbnail = that.data.thumbnail //视频封面图
+    var user_id = that.data.user_id; //作者id
+    var name = that.data.name //作者名称
+    var collectShow = that.data.collectShow; //收藏状态
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/Index/toCollect',
+      method: 'POST',
+      data: {
+        LoginUserid: LoginUserid,
+        url: url,
+        arid: arid,
+        thumbnail: thumbnail,
+        user_id: user_id,
+        name: name,
+        collectShow: collectShow
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success: function (res) {
+        wx.showToast({
+          title: res.data.msg,
+          duration: 2000,
+          icon: 'none'
+        });
+        that.setData({
+          collectShow: res.data.status
+        })
+        that.onLoad();
+      }
+    })
+  },
   // 购买
   radioSelect(e) {
     var id = e.currentTarget.dataset.id;
@@ -193,8 +250,10 @@ Page({
   },
   // 评论
   toComment(e){
+    var to_userid = e.currentTarget.dataset.to_userid;
+    var id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '/pages/indexComment/indexComment',
+      url: '/pages/indexComment/indexComment?id=' + id+'&to_userid='+to_userid,
     })
   },
   play: function () {
@@ -220,7 +279,7 @@ Page({
   imgTap(e){
     var id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '/pages/userinfo/userinfo?id=' + id,
+      url: '/pages/userinfo/userinfo?id='+id,
     })
   },
   loadData: function (page, success) {
@@ -258,46 +317,89 @@ Page({
     })
   },
   changeSubject: function (current) {
-    if (current < 0){
-      current=0;
-    }
     var that = this;
+    if (current < 0) {
+      current = 0;
+      wx.showToast({
+        title: '请下滑',
+        duration: 2000,
+        icon: 'none'
+      })
+    }
     current = current || 0;
     var list = this.data.subjectList;
     if (list.length <= current) {
       return;
     }
-    //视频播放量
     var url = list[current].post_content;
     var arid = list[current].arid;
+    var love = list[current].love;
+    var userid = app.d.userId;
+    //點讚圖標
     wx.request({
-      url: app.d.ceshiUrl + '/Api/index/setinc',
+      url: app.d.ceshiUrl + '/Api/index/zan',
       method: 'POST',
-      data: {url:url},
+      data: { arid: arid, userid: userid, icons:1},
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
-      success:function(res){
-
+      success: (res) => {
+        if(res.data.length == 0){
+          that.setData({
+            love:0
+          })
+        }else{
+          that.setData({
+            love: 1
+          })
+        }
       }
     })
-    this.setData({
-      current: current,
-      id: list[current].id,
-      user_id: list[current].user_id,
-      post_content: list[current].post_content,
-      post_desc: list[current].post_desc,
-      avatar: list[current].avatar,
-      post_like: list[current].post_like,
-      post_collect: list[current].post_collect,
-      comment_count: list[current].comment_count,
-      user_nickname: list[current].user_nickname,
-      url: list[current].post_content,
-      arid: list[current].arid,
-      love:list[current].love,
-      thumbnail: list[current].thumbnail,
-      collectShow: list[current].collectShow,
+    //收藏
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/index/zan',
+      method: 'POST',
+      data: { arid: arid, userid: userid, icons:2 },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success: (res) => {
+        if (res.data.length == 0) {
+          that.setData({
+            collectShow: 0
+          })
+        } else {
+          that.setData({
+            collectShow: 1
+          })
+        }
+      }
     })
+    //视频播放量
+    wx.request({
+      url: app.d.ceshiUrl + '/Api/index/setinc',
+      method: 'POST',
+      data: { url: url },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success:(res)=>{}
+    })
+    that.setData({
+      current: current,
+      subject: list[current],
+      id: list[current].arid,
+      url: list[current].post_content,
+      headImg: list[current].avatar,
+      like: list[current].post_like,
+      collect: list[current].post_favorites,
+      comment: list[current].comment_count,
+      commit: list[current].post_desc,
+      name: list[current].user_nickname,
+      user_id: list[current].user_id,
+      thumbnail: list[current].thumbnail,
+    })
+    // 自动加载
     var diff = list.length - current;
     if (diff <= 5) {
       this.loadData(this.data.page + 1);
@@ -323,20 +425,16 @@ Page({
   // 下面主要模仿滑动事件
   touchstart: function (e) {
     start = e.changedTouches[0];
-    // console.log("touchstart ", e.changedTouches[0])
   },
 
   touchmove: function (e) {
-    // console.log("touchmove ", e.changedTouches[0])
   },
 
   touchend: function (e) {
-    // console.log("touchend ", e.changedTouches[0])
     this.getDirect(start, e.changedTouches[0]);
   },
 
   touchcancel: function (e) {
-    // console.log("touchcancel ", e.changedTouches[0])
     this.getDirect(start, e.changedTouches[0]);
   },
 
@@ -359,24 +457,25 @@ Page({
       this.next()
     }
   },
-  //授权按钮
-  bindGetUserInfo: function (e) { 
-    console.log('用户点击按授权按钮index.js+272');   
-    //e.detail.userInfo 用户信息 
-    if (e.detail.userInfo){
-      app.getUserInfo();
-      var user = e.detail.userInfo;
-      // 用户 : 用户名
-      console.log(user.province);
+  onShow: function () {
+    if (app.globalData.userInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo,
+        hasUserInfo: true
+      })
     }
-  }
+  },
 })
 
 // 获取第一个应用
 function getRecommendList(opt) {
-  console.log("第一个调用");
+  console.log("getRecommendList...")
+  wx.request({
+    url: '',
+    data: opt.data || {
+      page: 1,
+      rows: 5
+    },
+    success: opt.success
+  })
 }
- 
-
-
-

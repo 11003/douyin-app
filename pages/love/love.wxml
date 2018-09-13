@@ -1,5 +1,5 @@
 <!--pages/love/love.wxml-->
-<view class='love-box'>
+<view class='love-box' wx:if="{{notComment == ''}}">
   <view class='love-item' wx:for='{{loveArr}}' wx:key=''>
     <view class='cImg'><image src='{{item.head}}' mode='widthFix'></image></view>
     <view class='cCenter'>
@@ -11,3 +11,4 @@
     </view>
   </view>
 </view>
+<view class='love-box' wx:else>{{notComment}}</view>

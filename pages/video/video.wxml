@@ -15,19 +15,32 @@
       </cover-view> -->
     </cover-view>
     <cover-view class='right-list'>
-      <cover-image class='headImg' bindtap='imgTap' src='{{avatar}}'></cover-image>
+      <cover-image class='headImg' bindtap='imgTap' data-id='{{to_userid}}' src='{{avatar}}'></cover-image>
+
+      <!-- 喜欢 -->
       <cover-view class='list-icon'>
-        <cover-image bindtap='toLike' wx:if="{{love == true}}" src='/images/index_icon1.png'></cover-image>
-        <cover-image bindtap='cancleLike' wx:else src='/images/index_icon1_on.png'></cover-image>
+      <cover-view wx:if="{{love == 1}}">
+      <cover-image bindtap='toLike' data-love='{{love}}' src='/images/index_icon1_on.png'></cover-image>
+      </cover-view>
+      <cover-view wx:else>
+      <cover-image bindtap='toLike'  data-love='{{love}}' src='/images/index_icon1.png'></cover-image>
+      </cover-view>
         <cover-view>{{post_like}}</cover-view>
       </cover-view>
+      <!-- 收藏 -->
       <cover-view class='list-icon'>
-        <cover-image bindtap='toCollect' wx:if="{{collectShow == true}}"src='/images/index_icon2.png'></cover-image>
-        <cover-image bindtap='cancleCollect' wx:else src='/images/index_icon2_on.png'></cover-image>
+      <cover-view wx:if="{{collectShow == 1}}">
+      <cover-image bindtap='toCollect' data-love='{{collectShow}}' src='/images/index_icon2_on.png'></cover-image>
+      </cover-view>
+      <cover-view wx:else>
+      <cover-image bindtap='toCollect'  data-love='{{collectShow}}' src='/images/index_icon2.png'></cover-image>
+      </cover-view>
         <cover-view>{{post_collect}}</cover-view>
       </cover-view>
-      <cover-view class='list-icon' bindtap='toComment'>
-        <cover-image src='/images/index_icon3.png'></cover-image>
+
+      <!-- 评论 -->
+      <cover-view class='list-icon' data-id='{{arid}}' data-to_userid='{{to_userid}}' bindtap='toComment'>
+        <cover-image src='/images/index_icon3.png' data-to_userid='{{to_userid}}' data-id='{{arid}}' bindtap='toComment'></cover-image>
         <cover-view>{{comment_count}}</cover-view>
       </cover-view>
       <cover-view class='list-icon' bindtap='toBuy'>
