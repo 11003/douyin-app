@@ -1,7 +1,0 @@
-<!--pages/userAgreement/userAgreement.wxml-->
-<view class='agreement-box'>
-  <view class='agreement-title'>{{ catename }}</view>
-  <view class='agreement-content'>
-    <text>{{ content }}</text>
-  </view>
-</view>

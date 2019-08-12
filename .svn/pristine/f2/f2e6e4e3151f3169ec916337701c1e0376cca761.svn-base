@@ -1,8 +1,0 @@
-<!--pages/withdraw/withdraw.wxml-->
-<view class='withdraw-box'>
-  <radio-group class="radio-group" bindchange="radioChange">
-    <label class="radio" bindtap='{{item.url}}' wx:for="{{items}}">
-      <radio value="{{item.name}}" color='#535353' checked="{{item.checked}}"/><image src='{{item.src}}'></image>提现到{{item.value}}
-    </label>
-  </radio-group>
-</view>

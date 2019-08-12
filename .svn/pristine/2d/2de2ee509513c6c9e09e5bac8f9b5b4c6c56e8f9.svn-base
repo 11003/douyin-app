@@ -1,7 +1,0 @@
-<!--pages/label/label.wxml-->
-<view class='label-box'>
-  <view class='label'>
-    <view class="label-item {{item.light == 1 ? 'active':''}}" bindtap='selectLight' data-id='{{index}}' wx:for="{{labelArr}}" wx:key=''>{{item.text}}</view>
-  </view>
-  <button class='label-btn' bindtap='toAddLabel'><text>+</text>自定义标签</button>
-</view>

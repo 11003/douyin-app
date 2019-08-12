@@ -1,6 +1,0 @@
-/* pages/news/news.wxss */
-.message-content{
-  background: #fff;
-  overflow: hidden;
-  margin-bottom: 20rpx;
-}

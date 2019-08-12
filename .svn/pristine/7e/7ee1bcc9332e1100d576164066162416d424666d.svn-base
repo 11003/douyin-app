@@ -1,9 +1,0 @@
-/* pages/comment/comment.wxss */
-page{
-  background: #f5f5f5;
-}
-.cInfo{
-  color: #000;
-  font-size: 25rpx;
-  margin-bottom: 10rpx;
-}
