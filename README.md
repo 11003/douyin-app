@@ -18,7 +18,7 @@
 
 #### 4. 后台控制器
 
-在本目录的 `controller`里面😀，后台使用的是 `ThinkCMF5`框架
+在本目录的 `controller`里面，后台使用的是 `ThinkCMF5`框架
 
 #### 5.效果图
 
