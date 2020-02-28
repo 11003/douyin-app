@@ -2,7 +2,7 @@
 App({
 
   d: {
-    ceshiUrl: "https://ssl.demenk.com/dyxcx/public/index.php",
+    ceshiUrl: "https://www.xxx.com/dyxcx/public/index.php", 
     userId:'',
   },
   globalData: {
