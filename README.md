@@ -9,7 +9,7 @@
 ##### 无法使用微信登录
 
 解决：
-1. 因为 `https://ssl.demenk.com` 不在以下 `request` 合法域名列表中，需要你重新配置下
+1. 重新配置域名`app.js -> ceshiUrl`
 2. 或者去掉 `app.js -> isLogin` 就能跳过微信登录
 
 #### 3. 请求的API地址
